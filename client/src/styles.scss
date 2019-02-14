@@ -1,0 +1,44 @@
+body {
+  background: #EDE7F6;
+  margin: 0;
+}
+
+* {
+  font-family: Roboto, Helvetica;
+}
+
+.furl-header {
+  color: white;
+  background: #311B92;
+  padding: 1rem;
+}
+
+.furl-nav {
+  text-align: center;
+  padding: 1rem;
+
+  a {
+    padding: 1rem;
+    text-decoration: none;
+    color: inherit;
+
+    &:visited {
+      color: inherit;
+    }
+
+    &:hover {
+      font-weight: 700;
+    }
+  }
+}
+
+.furl-view {
+  padding: 2rem;
+  max-width: 60rem;
+  margin: auto;
+}
+
+.view-header {
+  font-size: 3rem;
+  text-align: center;
+}

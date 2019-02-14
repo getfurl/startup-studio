@@ -1,0 +1,13 @@
+<section class="furl-view">
+  <header class="view-header">Submit</header>
+  <section>
+    Where website owners can submit their website for review
+  </section>
+  <section>
+    <form (submit)="submitWebsite($event)">
+      <label for="url">Your website:</label>
+      <input #url type="text" name="url" id="url">
+      <button (click)="submit">SUBMIT</button>
+    </form>
+  </section>
+</section>

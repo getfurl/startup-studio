@@ -1,0 +1,17 @@
+:host {
+  margin: 1rem;
+}
+
+.prompt-content {
+  font-size: 1.25rem;
+}
+
+mat-card-actions {
+  text-align: right;
+
+  mat-icon {
+    margin: 0.5rem;
+    font-size: 2rem;
+    padding: 0.5rem;
+  }
+}

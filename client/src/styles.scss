@@ -1,12 +1,12 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 body {
-  background: #EDE7F6;
+  background: white;
   margin: 0;
 }
 
 * {
-  font-family: Roboto, Helvetica;
+  font-family: Quicksand, sans-serif;
 }
 
 .furl-header {
@@ -16,6 +16,7 @@ body {
 
   .furl-logo {
     font-size: 2rem;
+    font-weight: 700;
   }
 
   display: flex;

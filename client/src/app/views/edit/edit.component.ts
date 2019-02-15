@@ -74,8 +74,8 @@ export class EditComponent implements OnInit {
       promptsAsStrings.push(keyValuePair[1]);
     });
 
-    this._dbService.updatePrompts(this.id, promptsAsStrings).subscribe(res => {
-      console.log(res);
+    this._dbService.updatePrompts(this.id, promptsAsStrings).subscribe(() => {
+      console.log("Saved changes");
     });
   }
 }

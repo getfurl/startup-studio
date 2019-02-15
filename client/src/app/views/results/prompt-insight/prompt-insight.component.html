@@ -1,0 +1,7 @@
+<mat-card>
+  <div class="prompt-content">{{promptText}}</div>
+  <mat-card-actions>
+      <mat-icon [matBadge]="promptFail" matBadgePosition="below|after" matBadgeColor="warn" color="warn">close</mat-icon>
+      <mat-icon [matBadge]="promptSuccess" matBadgePosition="below|after" matBadgeColor="primary" color="primary">check</mat-icon>
+  </mat-card-actions>
+</mat-card>

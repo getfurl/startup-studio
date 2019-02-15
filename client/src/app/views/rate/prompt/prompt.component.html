@@ -1,0 +1,23 @@
+<mat-card>
+  <div [class.hidden]="prompt.state == 'init'" class="prompt-content">{{prompt.text}}</div>
+  <mat-progress-bar *ngIf="prompt.state == 'start'" mode="buffer"></mat-progress-bar>
+  <ng-container [ngSwitch]="prompt.state">
+  <mat-card-actions *ngSwitchDefault>
+    <button mat-raised-button color="primary" (click)="start()">Start</button>
+  </mat-card-actions>
+  <mat-card-actions *ngSwitchCase="'start'">
+    <button mat-raised-button color="warn" (click)="fail()">Issue</button>
+    <button mat-raised-button color="primary" (click)="complete()">Complete</button>
+  </mat-card-actions>
+  <mat-card-actions *ngSwitchCase="'fail'">
+      <button mat-flat-button color="warn">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-actions>
+  <mat-card-actions *ngSwitchCase="'complete'">
+    <button mat-flat-button color="primary">
+      <mat-icon>check</mat-icon>
+    </button>
+  </mat-card-actions>
+  </ng-container>
+</mat-card>

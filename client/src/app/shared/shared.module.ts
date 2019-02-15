@@ -4,7 +4,7 @@ import { AuthControlComponent } from "./auth/auth-control/auth-control.component
 import { DialogSignActionComponent } from './dialogs/dialog-sign-action/dialog-sign-action.component';
 import { AuthService } from './auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material.module';
+import { MaterialModule } from './material.module';
 import { DbService } from './db.service';
 
 const SHARED_DIALOGS = [DialogSignActionComponent];

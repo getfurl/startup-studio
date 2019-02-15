@@ -1,0 +1,26 @@
+:host {
+  margin: 1rem;
+}
+
+.prompt-content {
+  font-size: 1.25rem;
+
+  &.hidden {
+    filter: blur(7px);
+  }
+}
+
+mat-card-actions {
+  text-align: right;
+  button {
+    margin-left: 0.5rem;
+    margin-right: 0;
+  }
+  background: inherit;
+}
+
+mat-progress-bar {
+  position: absolute;
+  left: 0;
+  bottom: 1.5rem;
+}

@@ -14,6 +14,9 @@ import { RateComponent } from './views/rate/rate.component';
 import { SubmitComponent } from './views/submit/submit.component';
 import { EditComponent } from './views/edit/edit.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { PromptComponent } from './views/rate/prompt/prompt.component';
+import { ResultsComponent } from './views/results/results.component';
+import { PromptInsightComponent } from './views/results/prompt-insight/prompt-insight.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     HomeComponent,
     RateComponent,
     SubmitComponent,
-    EditComponent
+    EditComponent,
+    PromptComponent,
+    ResultsComponent,
+    PromptInsightComponent
   ],
   imports: [
     BrowserModule,

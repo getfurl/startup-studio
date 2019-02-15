@@ -1,7 +1,20 @@
 <section class="furl-view">
-  <header class="view-header">Request Submitted!</header>
-  <section>
-    Please provide prompts and tasks for the request
-    Request: {{id}}
-  </section>
+  <header class="view-header">Request is Submitted!</header>
+  <ng-container *ngIf="feedbackRequest">
+      <div class="furl-url">{{feedbackRequest.url}}</div>
+      <section>
+        Please provide prompts and tasks for the request Request: {{ id }}
+      </section>
+      <form class="furl-form" [formGroup]="form">
+        <div *ngIf="prompts.length === 0">This feedback request has no prompts! Prompts will help you gather specific user feedback</div>
+        <ng-container *ngFor="let prompt of prompts; index as i">
+          <mat-form-field class="edit-prompt">
+            <input matInput #message maxlength="256" placeholder="Enter feedback instruction" [formControlName]="prompt.controlName">
+            <mat-hint align="start"><strong>prompt {{i+1}}</strong> </mat-hint>
+            <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+          </mat-form-field>
+        </ng-container>
+        <button mat-flat-button color="primary" (click)="addPrompt()">Add Prompt</button>
+      </form>
+  </ng-container>
 </section>

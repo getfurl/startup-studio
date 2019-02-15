@@ -53,3 +53,15 @@ body {
   font-size: 3rem;
   text-align: center;
 }
+
+.furl-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.furl-url {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 1rem;
+}

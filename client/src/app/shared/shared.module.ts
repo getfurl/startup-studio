@@ -5,10 +5,11 @@ import { DialogSignActionComponent } from './dialogs/dialog-sign-action/dialog-s
 import { AuthService } from './auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material.module';
+import { DbService } from './db.service';
 
 const SHARED_DIALOGS = [DialogSignActionComponent];
 const SHARED_COMPONENTS = [AuthControlComponent, ...SHARED_DIALOGS];
-const SHARED_SERVICES = [AuthService]
+const SHARED_SERVICES = [AuthService, DbService]
 
 @NgModule({
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],

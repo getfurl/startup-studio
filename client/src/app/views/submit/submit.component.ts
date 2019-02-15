@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { DbService } from 'src/app/shared/db.service';
 
 @Component({
   selector: 'app-submit',
@@ -10,7 +11,7 @@ export class SubmitComponent implements OnInit {
   @ViewChild("url")
   urlInput: ElementRef;
 
-  constructor(private _router: Router) { }
+  constructor(private _router: Router, private _dbService: DbService) { }
 
   ngOnInit() {
   }
@@ -18,6 +19,9 @@ export class SubmitComponent implements OnInit {
   submitWebsite(event) {
     event.preventDefault();
     const url = this.urlInput.nativeElement.value;
-    this._router.navigate([`/edit`, url]);
+    this._dbService.createFeedbackRequest(url)
+      .subscribe(documentRef => {
+        this._router.navigate([`/edit`, documentRef.id]);
+      })
   }
 }

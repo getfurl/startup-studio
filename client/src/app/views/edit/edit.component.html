@@ -1,9 +1,8 @@
 <section class="furl-view">
-  <header class="view-header">Add instructions</header>
+  <header class="view-header">Configure your UX test for <span>{{ feedbackRequest ? feedbackRequest.url : 'your website' }}</span></header>
   <ng-container *ngIf="feedbackRequest">
-    <div class="furl-url">for {{ feedbackRequest.url }}</div>
-    <section>
-      Please provide prompts and tasks for the request Request: {{ id }}
+    <section class="form-intro">
+      What do you want your users to do?
     </section>
     <form class="furl-form" [formGroup]="form">
       <div *ngIf="prompts.length === 0">
@@ -17,7 +16,7 @@
               matInput
               #message
               maxlength="256"
-              placeholder="Enter feedback instruction"
+              placeholder="Enter task to be performed"
               [formControlName]="prompt.controlName"
             />
             <mat-hint align="start"
@@ -29,24 +28,17 @@
       </ng-container>
       <div class="prompt-form-actions">
         <button mat-flat-button color="accent" (click)="addPrompt()">
-          Add Prompt
+          Add Task
         </button>
       </div>
     </form>
-    <mat-card class="comments-card">
-      <mat-form-field class="comments">
-        <mat-label
-          >Users will be prompted for a final written comment</mat-label
-        >
-        <input matInput disabled />
-      </mat-form-field>
-    </mat-card>
+    <mat-divider></mat-divider>
     <div class="footer-actions">
       <button mat-flat-button color="primary" disabled>
         {{ (savedState | async) ? "Saved" : "Saving" }}
       </button>
       <button mat-flat-button color="primary" (click)="requestFeedback()">
-        Request Feedback
+        Next
       </button>
     </div>
   </ng-container>

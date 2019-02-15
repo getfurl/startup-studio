@@ -1,19 +1,19 @@
 <section class="furl-view">
   <header class="view-header">
-    Here's what the <strong>users</strong> think
+    Here's what the <strong>users</strong> think about <span>{{ feedbackRequest ? feedbackRequest.url : 'your website' }}</span>
   </header>
   <ng-container *ngIf="feedbackRequest">
-    <div class="furl-url">{{ feedbackRequest.url }}</div>
     <ng-container [ngSwitch]="noResults">
-      <section *ngSwitchCase="true">
+      <section class="results-intro" *ngSwitchCase="true">
         No one submitted any feedback yet! Share the feedback request url.
       </section>
-      <section *ngSwitchDefault>
+      <section class="results-intro" *ngSwitchDefault>
         Helpful users everywhere searched far and wide for issues in your
         website.
       </section>
     </ng-container>
     <ng-container *ngIf="promptInsights">
+      <mat-divider></mat-divider>
       <app-prompt-insight
         [promptInsight]="promptInsight"
         *ngFor="let promptInsight of promptInsights"

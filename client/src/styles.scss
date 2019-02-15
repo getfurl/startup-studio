@@ -98,6 +98,14 @@ body {
     font-weight: 700;
   }
 
+  .furl-header-spacer {
+    flex-grow: 1;
+  }
+
+  .furl-header-feedback-button {
+    margin-right: 1rem;
+  }
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -130,7 +138,7 @@ body {
 }
 
 .view-header {
-  font-size: 3rem;
+  font-size: 2rem;
   text-align: center;
 }
 

@@ -6,11 +6,10 @@ import { AuthService } from './shared/auth/auth.service';
   template: `
     <header class="furl-header">
     <span class="furl-logo" [routerLink]="['/']">Furl</span>
+    <span class="furl-header-spacer"></span>
+    <button mat-flat-button class="furl-header-feedback-button" [routerLink]="['/submit']">Get Feedback</button>
     <app-auth-control></app-auth-control>
     </header>
-    <section class="furl-nav">
-      <a [routerLink]="['/submit']" *ngIf="user">Get Feedback</a>
-    </section>
     <router-outlet></router-outlet>
   `,
   styles: []

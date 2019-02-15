@@ -1,0 +1,62 @@
+<header class="sign-action-header">
+  Furl
+</header>
+<h2 class="mat-h2">{{ signUpEnabled ? "Sign up" : "Sign in" }}</h2>
+<section class="mat-caption">
+  <section>Please log in</section>
+</section>
+<form
+  class="sign-action-form"
+  [formGroup]="signActionForm"
+  (ngSubmit)="signAction()"
+>
+  <mat-form-field>
+    <input
+      matInput
+      type="email"
+      placeholder="e-mail"
+      autocomplete="email"
+      required
+      formControlName="email"
+    />
+    <mat-error>e-mail required</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      type="password"
+      placeholder="password"
+      autocomplete="password"
+      required
+      formControlName="password"
+    />
+    <mat-error>password required</mat-error>
+  </mat-form-field>
+  <section class="sign-up-toggle mat-caption" (click)="toggleSignUp()">
+    {{
+      signUpEnabled
+        ? "Already registered? sign in"
+        : "Never registered? sign up!"
+    }}
+  </section>
+  <section class="actions-menu">
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      [disabled]="!signActionForm.valid"
+    >
+      {{ signUpEnabled ? "Sign up" : "Sign in" }}
+    </button>
+    <mat-spinner *ngIf="signActionActive" [diameter]="25"></mat-spinner>
+    <ng-container *ngIf="signActionError">
+      <mat-icon
+        color="warn"
+        class="app-card-icon"
+        [matTooltip]="signActionError.message"
+        [matTooltipPosition]="'left'"
+        >error</mat-icon
+      >
+    </ng-container>
+  </section>
+</form>

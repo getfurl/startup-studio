@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-submit',
@@ -7,16 +8,16 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 })
 export class SubmitComponent implements OnInit {
   @ViewChild("url")
-  url: ElementRef;
+  urlInput: ElementRef;
 
-  constructor() { }
+  constructor(private _router: Router) { }
 
   ngOnInit() {
   }
 
   submitWebsite(event) {
     event.preventDefault();
-    
-    console.log(this.url.nativeElement.value);
+    const url = this.urlInput.nativeElement.value;
+    this._router.navigate([`/edit`, url]);
   }
 }

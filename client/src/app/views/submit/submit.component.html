@@ -5,9 +5,11 @@
   </section>
   <section>
     <form (submit)="submitWebsite($event)">
-      <label for="url">Your website:</label>
-      <input #url type="text" name="url" id="url">
-      <button (click)="submit">SUBMIT</button>
+      <mat-form-field>
+        <input #url matInput placeholder="Website URL" value="">
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="(submit)">Submit</button>
     </form>
   </section>
 </section>

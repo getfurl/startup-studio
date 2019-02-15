@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  max-width: 30rem;
+}
+
+.sign-action-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.mat-h2 {
+  margin: 0;
+}
+
+.sign-action-form {
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.sign-up-toggle {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.actions-menu {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+
+  mat-spinner {
+    margin: 0.125rem 1rem;
+  }
+}

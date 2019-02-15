@@ -4,14 +4,32 @@
 
 .prompt-content {
   font-size: 1.25rem;
+  font-weight: 700;
 }
 
 mat-card-actions {
   text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 
   mat-icon {
     margin: 0.5rem;
+    margin-bottom: 1rem;
     font-size: 2rem;
-    padding: 0.5rem;
   }
+}
+
+.prompt-success-percentage {
+
+}
+
+.prompt-fail-number {
+  color: #E53935;
+  font-weight: 700;
+}
+
+.prompt-success-number {
+  color: #43A047;
+  font-weight: 700;
 }

@@ -66,7 +66,8 @@ export class RateComponent implements OnInit {
   sendFeedback() {
     const feedback = {
       prompts: this.feedbackRequest.prompts.map(prompt => ({ text: prompt.text, success: prompt.state === 'complete' })),
-      written: this.writtenTextarea.nativeElement.value
+      written: this.writtenTextarea.nativeElement.value,
+      timestamp: Date.now()
     };
 
     this._dbService.addFeedback(this.feedbackRequestId, feedback)

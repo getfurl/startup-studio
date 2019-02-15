@@ -10,6 +10,9 @@ import { DbService } from 'src/app/shared/db.service';
 export class ResultsComponent implements OnInit {
   feedbackRequestId: string;
   feedbackRequest: any;
+  noResults: boolean;
+  rateUrl: string;
+  urlCopied: boolean;
 
   promptInsights = [];
   writtenFeedback = [];
@@ -26,6 +29,7 @@ export class ResultsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.rateUrl = location.host + "/rate/" + this.feedbackRequestId;
   }
 
   loadFeedback(feedbackRequestId) {
@@ -39,11 +43,16 @@ export class ResultsComponent implements OnInit {
           prompts[prompt.text] = prompts[prompt.text] ? prompts[prompt.text].concat(prompt.success) : [prompt.success];
         })
 
-        written.push(item.feedback.written);
+        written.push({
+          text: item.feedback.written,
+          timestamp: item.feedback.timestamp || Date.now() - 1000 * 60 * 60
+        });
       });
 
       this.promptInsights = Object.entries(prompts)
-      this.writtenFeedback = written;
+      this.writtenFeedback = written.sort((a: any, b: any) => b.timestamp - a.timestamp);
+
+      this.noResults = (this.writtenFeedback.length + this.promptInsights.length) === 0;
     })
   }
 
@@ -54,4 +63,10 @@ export class ResultsComponent implements OnInit {
       })
   }
 
+  copy() {
+    this.urlCopied = true;
+    setTimeout(() => {
+      this.urlCopied = false;
+    }, 1000);
+  }
 }

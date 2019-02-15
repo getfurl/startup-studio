@@ -9,7 +9,8 @@ import {
   MatFormFieldModule,
   MatCardModule,
   MatProgressBarModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatDividerModule
 } from "@angular/material";
 
 const MODULES = [
@@ -22,7 +23,8 @@ const MODULES = [
   MatFormFieldModule,
   MatCardModule,
   MatProgressBarModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatDividerModule
 ];
 
 @NgModule({

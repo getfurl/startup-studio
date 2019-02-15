@@ -1,15 +1,42 @@
 <section class="furl-view">
-    <header class="view-header">Here's what the <strong>users</strong> think</header>
-    <ng-container *ngIf="feedbackRequest">
-        <div class="furl-url">{{feedbackRequest.url}}</div>
-        <section>
-          Helpful users everywhere searched far and wide for issues in your website.
-        </section>
-        <ng-container *ngIf="promptInsights">
-          <app-prompt-insight [promptInsight]="promptInsight" *ngFor="let promptInsight of promptInsights"></app-prompt-insight>
-        </ng-container>
-        <div *ngFor="let writtenComment of writtenFeedback">
-          {{writtenComment}}
-        </div>
+  <header class="view-header">
+    Here's what the <strong>users</strong> think
+  </header>
+  <ng-container *ngIf="feedbackRequest">
+    <div class="furl-url">{{ feedbackRequest.url }}</div>
+    <ng-container [ngSwitch]="noResults">
+      <section *ngSwitchCase="true">
+        No one submitted any feedback yet! Share the feedback request url.
+      </section>
+      <section *ngSwitchDefault>
+        Helpful users everywhere searched far and wide for issues in your
+        website.
+      </section>
     </ng-container>
-  </section>
+    <ng-container *ngIf="promptInsights">
+      <app-prompt-insight
+        [promptInsight]="promptInsight"
+        *ngFor="let promptInsight of promptInsights"
+      ></app-prompt-insight>
+    </ng-container>
+    
+    <mat-divider></mat-divider>
+    <app-user-comment class="user-comment-card" *ngFor="let writtenComment of writtenFeedback" [writtenComment]="writtenComment">
+   
+    </app-user-comment>
+
+    <mat-divider></mat-divider>
+    <mat-card class="feedback-request-url">
+      <section>
+        <mat-card-title>Feedback Request URL</mat-card-title>
+        <mat-card-subtitle
+          >Share with colleageus, friends, family, anyone.</mat-card-subtitle
+        >
+      </section>
+      <section class="url-share-wrapper">
+        <input mat-input [value]="rateUrl" />
+        <button mat-flat-button color="accent" ngxClipboard [cbContent]="rateUrl" [disabled]="urlCopied" (click)="copy()">{{ urlCopied ? 'copied' : 'copy' }}</button>
+      </section>
+    </mat-card>
+  </ng-container>
+</section>

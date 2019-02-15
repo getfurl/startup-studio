@@ -57,6 +57,7 @@ export class EditComponent implements OnInit {
 
   loadPromptsFromFeedbackRequest(feedbackRequest) {
     if (!feedbackRequest.prompts && !Array.isArray(feedbackRequest.prompts)) {
+      this.addPrompt("");
       return;
     }
     

@@ -1,15 +1,15 @@
 <section class="furl-view">
-  <header class="view-header">Submit</header>
-  <section>
-    Where website owners can submit their website for review
-  </section>
-  <section>
-    <form class="furl-form" (submit)="submitWebsite($event)">
-      <mat-form-field>
-        <input #url matInput placeholder="Website URL" value="">
-      </mat-form-field>
-
-      <button mat-flat-button color="primary" (click)="(submit)">Submit</button>
-    </form>
-  </section>
+  <header class="view-header">What are <strong>they</strong> thinking?</header>
+  <form class="furl-form" (submit)="submitWebsite($event)">
+    <mat-form-field class="form-url-field">
+      <input #url matInput placeholder="Website URL" value="" />
+    </mat-form-field>
+    <section class="form-explaination">
+      We will make feedback collection super easy!
+    </section>
+    <div class="form-actions">
+      <button mat-flat-button color="primary" (click)="(submit)">Next</button>
+    </div>
+  </form>
+  <section></section>
 </section>

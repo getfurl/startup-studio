@@ -1,3 +1,28 @@
 .edit-prompt {
   margin: 0.5rem 0;
+  width: 100%;
+}
+
+.prompt-card {
+  margin-bottom:1rem;
+}
+
+.comments-card {
+  margin-bottom: 1rem;
+}
+
+.comments {
+  width: 100%;
+}
+
+.prompt-form-actions {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.footer-actions {
+  text-align: center;
+  button {
+    margin: 0.5rem;
+  }
 }

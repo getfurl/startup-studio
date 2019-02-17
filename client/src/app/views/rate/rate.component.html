@@ -1,7 +1,7 @@
 <section class="furl-view">
   <header class="view-header">Can you perform the following tasks?</header>
   <ng-container *ngIf="feedbackRequest">
-      <div class="furl-url">{{feedbackRequest.url}}</div>
+      <div class="furl-url" (click)="openUrl()">{{feedbackRequest.url}}</div>
       <section>
         The creators of {{ feedbackRequest.url }} are interested in your opinion! What do you think about their website?
       </section>

@@ -75,4 +75,8 @@ export class RateComponent implements OnInit {
       console.log(res);
     })
   }
+
+  openUrl() {
+    window.open("http://" + this.feedbackRequest.url);
+  }
 }

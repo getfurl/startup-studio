@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "start": "node server.js",
+    "copy-app": "cp -R ../client/dist/ ./dist/",
+    "copy-requirements": "npm run copy-app",
+    "predeploy": "npm run copy-requirements",
+    "deploy": "npm run predeploy && gcloud app deploy"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "express": "^4.16.4",
+    "http": "0.0.0",
+    "path": "^0.12.7"
+  }
+}

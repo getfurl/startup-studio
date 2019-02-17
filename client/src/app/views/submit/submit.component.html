@@ -1,11 +1,11 @@
 <section class="furl-view">
   <header class="view-header">Set up your UX test</header>
-  <form class="furl-form" (submit)="submitWebsite($event)">
+  <form #form class="furl-form" (submit)="submitWebsite($event)">
     <mat-form-field class="form-url-field">
       <input #url matInput placeholder="Website URL" value="" />
     </mat-form-field>
     <div class="form-actions">
-      <button mat-flat-button color="primary" (click)="(submit)">Next</button>
+      <button mat-flat-button color="primary" type="submit">Next</button>
     </div>
   </form>
   <section></section>

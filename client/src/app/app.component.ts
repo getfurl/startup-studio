@@ -5,7 +5,7 @@ import { AuthService } from './shared/auth/auth.service';
   selector: 'app-root',
   template: `
     <header class="furl-header">
-    <span class="furl-logo" [routerLink]="['/']">Furl</span>
+    <span class="furl-logo" [routerLink]="['/']">furl</span>
     <span class="furl-header-spacer"></span>
     <button mat-flat-button class="furl-header-feedback-button" [routerLink]="['/submit']">Get Feedback</button>
     <app-auth-control></app-auth-control>

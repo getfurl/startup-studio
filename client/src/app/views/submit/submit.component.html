@@ -5,7 +5,7 @@
       <input #url matInput placeholder="Website URL" value="" />
     </mat-form-field>
     <div class="form-actions">
-      <button mat-flat-button color="primary" type="submit">Next</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="submitInProgress | async">Next</button>
     </div>
   </form>
   <section></section>

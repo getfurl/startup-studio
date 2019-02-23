@@ -8,10 +8,11 @@ import { MaterialModule } from './material/material.module';
 import { ClipboardModule } from 'ngx-clipboard'
 import { DbService } from './db.service';
 import { UserCommentComponent } from './user-comment/user-comment.component';
+import { AuthDialogService } from './auth/auth-dialog.service';
 
 const SHARED_DIALOGS = [DialogSignActionComponent];
 const SHARED_COMPONENTS = [UserCommentComponent, AuthControlComponent, ...SHARED_DIALOGS];
-const SHARED_SERVICES = [AuthService, DbService]
+const SHARED_SERVICES = [AuthService, AuthDialogService, DbService]
 
 @NgModule({
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule, ClipboardModule],

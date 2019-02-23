@@ -59,7 +59,7 @@ export class ResultsComponent implements OnInit {
   loadFeedbackRequest(feedbackRequestId) {
     this._dbService.getFeedbackRequest(feedbackRequestId)
       .subscribe(feedbackRequest => {
-        this.feedbackRequest = feedbackRequest.data();
+        this.feedbackRequest = feedbackRequest;
       })
   }
 

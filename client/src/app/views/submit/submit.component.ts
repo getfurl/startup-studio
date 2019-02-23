@@ -1,27 +1,55 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { DbService } from 'src/app/shared/db.service';
+import { FeedbackRequest } from "./../../shared/models/feedback-request.model";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  EventEmitter
+} from "@angular/core";
+import { Router } from "@angular/router";
+import { DbService } from "src/app/shared/db.service";
+import { AuthService } from "src/app/shared/auth/auth.service";
+import { SnackbarService } from "src/app/shared/snackbar.service";
 
 @Component({
-  selector: 'app-submit',
-  templateUrl: './submit.component.html',
-  styleUrls: ['./submit.component.scss']
+  selector: "app-submit",
+  templateUrl: "./submit.component.html",
+  styleUrls: ["./submit.component.scss"]
 })
-export class SubmitComponent implements OnInit {
+export class SubmitComponent {
   @ViewChild("url")
   urlInput: ElementRef;
 
-  constructor(private _router: Router, private _dbService: DbService) { }
+  submitInProgress = new EventEmitter<boolean>();
 
-  ngOnInit() {
-  }
+  constructor(
+    private _router: Router,
+    private _dbService: DbService,
+    private _authService: AuthService,
+    private _snackbarService: SnackbarService
+  ) {}
 
   submitWebsite(event) {
     event.preventDefault();
+    this.submitInProgress.emit(true);
     const url = this.urlInput.nativeElement.value;
-    this._dbService.createFeedbackRequest(url)
-      .subscribe(documentRef => {
+
+    const user = this._authService.currentUser.value;
+
+    if (!user) {
+      this._snackbarService.noUserError();
+      return this.submitInProgress.next(false);
+    }
+
+    const feedbackRequest = new FeedbackRequest(url, user.uid);
+    this._dbService.createFeedbackRequest(feedbackRequest).subscribe(
+      documentRef => {
         this._router.navigate([`/edit`, documentRef.id]);
-      })
+      },
+      err => {
+        this._snackbarService.subscriptionError(err);
+        this.submitInProgress.emit(false);
+      }
+    );
   }
 }

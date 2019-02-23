@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FormGroup, FormControl } from "@angular/forms";
 import { debounceTime } from "rxjs/operators";
 import { BehaviorSubject } from 'rxjs';
+import { FeedbackRequest } from 'src/app/shared/models';
 
 @Component({
   selector: "app-edit",
@@ -15,7 +16,7 @@ export class EditComponent implements OnInit {
   promptIndex = 0;
   prompts = [];
 
-  feedbackRequest: any;
+  feedbackRequest: FeedbackRequest;
 
   savedState = new BehaviorSubject(true);
 
@@ -54,15 +55,14 @@ export class EditComponent implements OnInit {
   loadFeedbackRequest(feedbackRequestId) {
     this._dbService.getFeedbackRequest(feedbackRequestId)
       .subscribe(feedbackRequest => {
-        this.feedbackRequest = feedbackRequest.data();
+        this.feedbackRequest = feedbackRequest;
         this.loadPromptsFromFeedbackRequest(this.feedbackRequest);
       })
   }
 
-  loadPromptsFromFeedbackRequest(feedbackRequest) {
-    if (!feedbackRequest.prompts && !Array.isArray(feedbackRequest.prompts)) {
-      this.addPrompt("");
-      return;
+  loadPromptsFromFeedbackRequest(feedbackRequest: FeedbackRequest) {
+    if (feedbackRequest.emptyPrompts) {
+      return this.addPrompt("");
     }
     
     feedbackRequest.prompts.forEach(prompt => {

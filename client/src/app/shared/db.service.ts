@@ -1,8 +1,10 @@
+import { FeedbackRequest } from "./models/feedback-request.model";
 import { AuthService } from "./auth/auth.service";
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { throwError, from, Observable } from "rxjs";
 import { FirebaseFirestore } from "@angular/fire";
+import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
@@ -18,30 +20,27 @@ export class DbService {
   }
 
   createFeedbackRequest(
-    url: string
+    feedbackRequest: FeedbackRequest
   ): Observable<firebase.firestore.DocumentReference> {
-    if (!url) {
+    if (!feedbackRequest.valid) {
       return throwError(
         "DbService.createFeedbackCollector - missing arguments"
       );
     }
 
     return from(
-      this._db.collection("feedback-requests").add({
-        url: url,
-        userId: this.user.uid
-      })
+      this._db.collection("feedback-requests").add(feedbackRequest.toJSON())
     );
   }
 
-  getFeedbackRequest(
-    feedbackRequestId: string
-  ): Observable<firebase.firestore.DocumentSnapshot> {
+  getFeedbackRequest(feedbackRequestId: string): Observable<FeedbackRequest> {
     if (!feedbackRequestId) {
       return throwError("DbService.getFeedbackRequest - missing arguments");
     }
 
-    return from(this._db.doc(`feedback-requests/${feedbackRequestId}`).get());
+    return from(
+      this._db.doc(`feedback-requests/${feedbackRequestId}`).get()
+    ).pipe(map(FeedbackRequest.fromQueryDocumentSnapshot));
   }
 
   updatePrompts(feedbackRequestId: string, prompts: string[]) {

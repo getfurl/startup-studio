@@ -7,9 +7,9 @@ import {
   EventEmitter
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { DbService } from "src/app/shared/db.service";
-import { AuthService } from "src/app/shared/auth/auth.service";
-import { SnackbarService } from "src/app/shared/snackbar.service";
+import { DbService } from "../../shared/db.service";
+import { AuthService } from "../../shared/auth/auth.service";
+import { SnackbarService } from "../../shared/snackbar.service";
 
 @Component({
   selector: "app-submit",

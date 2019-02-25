@@ -12,12 +12,12 @@
         website.
       </section>
     </ng-container>
-    <ng-container *ngIf="promptInsights">
+    <ng-container *ngIf="actionInsights">
       <mat-divider></mat-divider>
-      <app-prompt-insight
-        [promptInsight]="promptInsight"
-        *ngFor="let promptInsight of promptInsights"
-      ></app-prompt-insight>
+      <app-action-insight
+        [actionInsight]="actionInsight"
+        *ngFor="let actionInsight of actionInsights"
+      ></app-action-insight>
     </ng-container>
     
     <mat-divider></mat-divider>

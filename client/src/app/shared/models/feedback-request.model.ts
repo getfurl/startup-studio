@@ -1,14 +1,16 @@
+import { FeedbackPrompt } from './';
+
 export class FeedbackRequest {
   id?: string;
   url: string;
   author: string;
-  prompts: string[];
+  prompts: FeedbackPrompt[];
   created: Date;
 
   constructor(
     url: string,
     author: string,
-    prompts: string[] = [],
+    prompts: FeedbackPrompt[] = [],
     created: Date = new Date()
   ) {
     this.url = url;

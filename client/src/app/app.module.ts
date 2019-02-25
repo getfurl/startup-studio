@@ -14,9 +14,9 @@ import { RateComponent } from './views/rate/rate.component';
 import { SubmitComponent } from './views/submit/submit.component';
 import { EditComponent } from './views/edit/edit.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { PromptComponent } from './views/rate/prompt/prompt.component';
+import { ActionComponent } from './views/rate/action/action.component';
 import { ResultsComponent } from './views/results/results.component';
-import { PromptInsightComponent } from './views/results/prompt-insight/prompt-insight.component';
+import { ActionInsightComponent } from './views/results/action-insight/action-insight.component';
 
 @NgModule({
   declarations: [
@@ -25,9 +25,9 @@ import { PromptInsightComponent } from './views/results/prompt-insight/prompt-in
     RateComponent,
     SubmitComponent,
     EditComponent,
-    PromptComponent,
+    ActionComponent,
     ResultsComponent,
-    PromptInsightComponent
+    ActionInsightComponent
   ],
   imports: [
     BrowserModule,

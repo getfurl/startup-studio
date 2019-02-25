@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { DbService } from 'src/app/shared/db.service';
+import { DbService } from '../../shared/db.service';
+import { Feedback } from '../../shared/models';
 
 @Component({
   selector: 'app-results',
@@ -14,7 +15,7 @@ export class ResultsComponent implements OnInit {
   rateUrl: string;
   urlCopied: boolean;
 
-  promptInsights = [];
+  actionInsights = [];
   writtenFeedback = [];
 
   constructor(
@@ -33,26 +34,24 @@ export class ResultsComponent implements OnInit {
   }
 
   loadFeedback(feedbackRequestId) {
-
-    this._dbService.getAllFeedback(feedbackRequestId).subscribe(res => {
-      const prompts = {};
+    this._dbService.getAllFeedback(feedbackRequestId).subscribe(allFeedback => {
+      const actions = {};
       const written = [];
 
-      res.forEach((item: any) => {
-        item.feedback.prompts.forEach(prompt => {
-          prompts[prompt.text] = prompts[prompt.text] ? prompts[prompt.text].concat(prompt.success) : [prompt.success];
+      allFeedback.forEach((feedback: Feedback) => {
+        feedback.actions.forEach(action => {
+          actions[action.text] = actions[action.text] ? actions[action.text].concat(action) : [action];
         })
-
         written.push({
-          text: item.feedback.written,
-          timestamp: item.feedback.timestamp || Date.now() - 1000 * 60 * 60
+          text: feedback.written,
+          timestamp: feedback.timestamp
         });
       });
 
-      this.promptInsights = Object.entries(prompts)
+      this.actionInsights = Object.entries(actions)
       this.writtenFeedback = written.sort((a: any, b: any) => b.timestamp - a.timestamp);
 
-      this.noResults = (this.writtenFeedback.length + this.promptInsights.length) === 0;
+      this.noResults = (this.writtenFeedback.length + this.actionInsights.length) === 0;
     })
   }
 

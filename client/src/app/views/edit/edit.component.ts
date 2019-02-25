@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FormGroup, FormControl } from "@angular/forms";
 import { debounceTime } from "rxjs/operators";
 import { BehaviorSubject } from 'rxjs';
-import { FeedbackRequest } from 'src/app/shared/models';
+import { FeedbackRequest, FeedbackPrompt } from '../../shared/models';
 
 @Component({
   selector: "app-edit",
@@ -42,13 +42,13 @@ export class EditComponent implements OnInit {
 
   ngOnInit() {}
 
-  addPrompt(promptValue: string) {
+  addPrompt(prompt: FeedbackPrompt = FeedbackPrompt.empty) {
     const controlName = `prompt-${this.promptIndex}`;
     this.prompts.push({
       controlName
     });
 
-    this.form.addControl(controlName, new FormControl(promptValue));
+    this.form.addControl(controlName, new FormControl(prompt.text));
     this.promptIndex++;
   }
 
@@ -62,7 +62,7 @@ export class EditComponent implements OnInit {
 
   loadPromptsFromFeedbackRequest(feedbackRequest: FeedbackRequest) {
     if (feedbackRequest.emptyPrompts) {
-      return this.addPrompt("");
+      return this.addPrompt(FeedbackPrompt.empty);
     }
     
     feedbackRequest.prompts.forEach(prompt => {
@@ -79,7 +79,9 @@ export class EditComponent implements OnInit {
       promptsAsStrings.push(keyValuePair[1]);
     });
 
-    this._dbService.updatePrompts(this.id, promptsAsStrings).subscribe(() => {
+    const prompts = promptsAsStrings.map(promptAsString => new FeedbackPrompt(promptAsString));
+
+    this._dbService.updatePrompts(this.id, prompts).subscribe(() => {
       this.savedState.next(true);
     });
   }

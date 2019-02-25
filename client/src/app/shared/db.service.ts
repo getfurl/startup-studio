@@ -1,10 +1,9 @@
-import { FeedbackRequest } from "./models/feedback-request.model";
 import { AuthService } from "./auth/auth.service";
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { throwError, from, Observable } from "rxjs";
-import { FirebaseFirestore } from "@angular/fire";
+import { throwError, from, Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
+import { Feedback, FeedbackRequest, FeedbackPrompt } from "./models";
 
 @Injectable({
   providedIn: "root"
@@ -23,9 +22,7 @@ export class DbService {
     feedbackRequest: FeedbackRequest
   ): Observable<firebase.firestore.DocumentReference> {
     if (!feedbackRequest.valid) {
-      return throwError(
-        "DbService.createFeedbackCollector - missing arguments"
-      );
+      return this.serviceError("createFeedbackCollector - missing arguments", feedbackRequest.toJSON());
     }
 
     return from(
@@ -35,7 +32,7 @@ export class DbService {
 
   getFeedbackRequest(feedbackRequestId: string): Observable<FeedbackRequest> {
     if (!feedbackRequestId) {
-      return throwError("DbService.getFeedbackRequest - missing arguments");
+      return this.serviceError("getFeedbackRequest - missing arguments");
     }
 
     return from(
@@ -43,21 +40,21 @@ export class DbService {
     ).pipe(map(FeedbackRequest.fromQueryDocumentSnapshot));
   }
 
-  updatePrompts(feedbackRequestId: string, prompts: string[]) {
+  updatePrompts(feedbackRequestId: string, prompts: FeedbackPrompt[]) {
     if (!feedbackRequestId) {
-      return throwError("DbService.updatePrompts - missing arguments");
+      return this.serviceError("updatePrompts - missing arguments");
     }
 
     return from(
       this._db.doc(`feedback-requests/${feedbackRequestId}`).update({
-        prompts
+        prompts: prompts.map(prompt => prompt.toJSON())
       })
     );
   }
 
-  getAllFeedback(feedbackRequestId) {
+  getAllFeedback(feedbackRequestId): Observable<Feedback[]> {
     if (!feedbackRequestId) {
-      return throwError("DbService.getAllFeedback - missing arguments");
+      return this.serviceError("getAllFeedback - missing arguments");
     }
 
     return from(
@@ -66,22 +63,28 @@ export class DbService {
           ref.where("feedbackRequestId", "==", feedbackRequestId)
         )
         .valueChanges()
-    );
+    ).pipe(map((value) => {
+      return value.map((feedbackData) => {
+        return Feedback.constructFromData(feedbackData);
+      });
+    }));
   }
 
   addFeedback(
-    feedbackRequestId,
-    feedback
+    feedback: Feedback
   ): Observable<firebase.firestore.DocumentReference> {
-    if (!feedbackRequestId || !feedback) {
-      return throwError("DbService.addFeedback - missing arguments");
+    if (!feedback.valid) {
+      return this.serviceError(
+        "addFeedback - missing arguments",
+        feedback.toJSON()
+      );
     }
 
-    return from(
-      this._db.collection("feedback").add({
-        feedbackRequestId,
-        feedback
-      })
-    );
+    return from(this._db.collection("feedback").add(feedback.toJSON()));
+  }
+
+  serviceError(message, data = {}) {
+    console.error(`DbService: ${message}\n${JSON.stringify(data)}`);
+    return throwError(message);
   }
 }

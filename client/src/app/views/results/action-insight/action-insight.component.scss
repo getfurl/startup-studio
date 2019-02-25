@@ -2,7 +2,7 @@
   margin: 1rem;
 }
 
-.prompt-content {
+.action-content {
   font-size: 1.25rem;
   font-weight: 700;
 }
@@ -20,16 +20,24 @@ mat-card-actions {
   }
 }
 
-.prompt-success-percentage {
+.action-success-percentage {
 
 }
 
-.prompt-fail-number {
+.action-average-duration {
+  margin-left: 0.5rem;
+}
+
+.card-actions-grow {
+  flex-grow: 1;
+}
+
+.action-fail-number {
   color: #E53935;
   font-weight: 700;
 }
 
-.prompt-success-number {
+.action-success-number {
   color: #43A047;
   font-weight: 700;
 }

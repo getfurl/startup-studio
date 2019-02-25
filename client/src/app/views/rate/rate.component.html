@@ -6,14 +6,15 @@
       The creators of {{ feedbackRequest.url }} are interested in your opinion!
       What do you think about their website?
     </section>
-    <ng-container *ngIf="feedbackRequest.prompts">
+    <ng-container *ngIf="feedbackActions">
       <div>Can you perform the following tasks?</div>
-      <app-prompt
-        [prompt]="prompt"
-        (start)="handlePromptStart($event, i)"
-        (end)="handlePromptEnd($event, i)"
-        *ngFor="let prompt of feedbackRequest.prompts; index as i"
-      ></app-prompt>
+      <app-action
+        [action]="action"
+        [ongoingAction]="ongoingAction"
+        (start)="handleActionStart($event, i)"
+        (end)="handleActionEnd($event, i)"
+        *ngFor="let action of feedbackActions; index as i"
+      ></app-action>
     </ng-container>
     <mat-form-field class="comments">
       <mat-label>Written feedback tell the other half of the story!</mat-label>
@@ -37,19 +38,19 @@
         mat-flat-button
         color="primary"
         (click)="sendFeedback()"
-        [disabled]="!promptsDone || (feedbackStatus | async) !== FEEDBACK_STATUS.INITIATED"
+        [disabled]="!allActionsDone || (feedbackStatus | async) !== FeedbackStatus.INIT"
       >
         <ng-container [ngSwitch]="feedbackStatus | async">
-          <ng-template [ngSwitchCase]="FEEDBACK_STATUS.INITIATED">
+          <ng-template [ngSwitchCase]="FeedbackStatus.INIT">
             send feedback
           </ng-template>
-          <ng-template [ngSwitchCase]="FEEDBACK_STATUS.SENDING">
+          <ng-template [ngSwitchCase]="FeedbackStatus.SENDING">
             sending feedback
           </ng-template>
-          <ng-template [ngSwitchCase]="FEEDBACK_STATUS.DELIVERED">
+          <ng-template [ngSwitchCase]="FeedbackStatus.DELIVERED">
             feedback sent
           </ng-template>
-          <ng-template [ngSwitchCase]="FEEDBACK_STATUS.ERROR">
+          <ng-template [ngSwitchCase]="FeedbackStatus.ERROR">
             failed to send
           </ng-template>
           <ng-template ngSwitchDefault>

@@ -1,10 +1,12 @@
 import { BehaviorSubject } from "rxjs";
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
-import { DbService } from "src/app/shared/db.service";
+import { DbService } from "../../shared/db.service";
+import { AuthService } from '../../shared/auth/auth.service';
+import { Feedback, FeedbackRequest, FeedbackAction } from '../../shared/models';
 
-enum FEEDBACK_STATUS {
-  INITIATED,
+enum FeedbackStatus {
+  INIT,
   SENDING,
   DELIVERED,
   ERROR
@@ -17,15 +19,18 @@ enum FEEDBACK_STATUS {
 })
 export class RateComponent implements OnInit {
   feedbackRequestId: string;
-  feedbackRequest: any;
+  feedbackRequest: FeedbackRequest;
+  feedbackActions: FeedbackAction[];
 
-  currentPromptIndex: number;
-  promptsDone: boolean;
+  ongoingAction: FeedbackAction = null;
+  ongoingActionIndex: number = null;
 
-  FEEDBACK_STATUS = FEEDBACK_STATUS;
+  allActionsDone: boolean;
 
-  feedbackStatus = new BehaviorSubject<FEEDBACK_STATUS>(
-    FEEDBACK_STATUS.INITIATED
+  FeedbackStatus = FeedbackStatus;
+
+  feedbackStatus = new BehaviorSubject<FeedbackStatus>(
+    FeedbackStatus.INIT
   );
 
   @ViewChild("written")
@@ -33,8 +38,9 @@ export class RateComponent implements OnInit {
 
   constructor(
     private _activatedRoute: ActivatedRoute,
-    private _dbService: DbService
-  ) {
+    private _dbService: DbService,
+    private _authService: AuthService
+    ) {
     this._activatedRoute.params.subscribe((params: Params) => {
       this.feedbackRequestId = params.id;
       this.loadFeedbackRequest(this.feedbackRequestId);
@@ -48,58 +54,54 @@ export class RateComponent implements OnInit {
       .getFeedbackRequest(feedbackRequestId)
       .subscribe(feedbackRequest => {
         this.feedbackRequest = feedbackRequest;
-        this.feedbackRequest.prompts = this.feedbackRequest.prompts.map(
-          promptAsString => ({
-            text: promptAsString,
-            state: "init"
-          })
+        this.feedbackActions = this.feedbackRequest.prompts.map(
+          prompt => new FeedbackAction(prompt.text)
         );
       });
   }
 
-  handlePromptStart(event, index) {
-    if (!isNaN(this.currentPromptIndex)) {
-      return;
+  handleActionStart(action: FeedbackAction, index: number) {
+    this.ongoingActionIndex = index;
+    this.ongoingAction = action;
+  }
+
+  handleActionEnd(event, index) {
+    if (this.ongoingAction !== event || this.ongoingActionIndex !== index) {
+      return console.error("Something went terribly wrong with actions state management");
     }
+    
+    delete this.ongoingActionIndex;
+    delete this.ongoingAction;
 
-    this.currentPromptIndex = index;
-    this.feedbackRequest.prompts[index].state = event;
+    this.allActionsDone = this.checkAllActionsDone(this.feedbackActions);
   }
 
-  handlePromptEnd(event, index) {
-    delete this.currentPromptIndex;
-    this.feedbackRequest.prompts[index].state = event;
-
-    this.promptsDone = this.allPromptsDone(this.feedbackRequest.prompts);
-  }
-
-  allPromptsDone(prompts) {
-    let promptsDone = true;
-    prompts.forEach(
-      prompt => (promptsDone = promptsDone && prompt.state !== "init")
+  checkAllActionsDone(actions: FeedbackAction[]) {
+    let allActionsDone = true;
+    actions.forEach(
+      action => (allActionsDone = allActionsDone && action.isDone)
     );
-    return promptsDone;
+    return allActionsDone;
   }
 
   sendFeedback() {
-    const feedback = {
-      prompts: this.feedbackRequest.prompts.map(prompt => ({
-        text: prompt.text,
-        success: prompt.state === "complete"
-      })),
-      written: this.writtenTextarea.nativeElement.value,
-      timestamp: Date.now()
-    };
+    const user = this._authService.currentUser.value;
+    const feedback = new Feedback(
+      user ? user.uid : null,
+      this.feedbackRequestId,
+      this.feedbackActions,
+      this.writtenTextarea.nativeElement.value,
+      new Date()
+    );
 
-    this.feedbackStatus.next(this.FEEDBACK_STATUS.SENDING);
+    this.feedbackStatus.next(this.FeedbackStatus.SENDING);
 
-    this._dbService.addFeedback(this.feedbackRequestId, feedback).subscribe(
-      res => {
-        this.feedbackStatus.next(this.FEEDBACK_STATUS.DELIVERED);
-        console.log(res);
+    this._dbService.addFeedback(feedback).subscribe(
+      () => {
+        this.feedbackStatus.next(this.FeedbackStatus.DELIVERED);
       },
       () => {
-        this.feedbackStatus.next(this.FEEDBACK_STATUS.ERROR);
+        this.feedbackStatus.next(this.FeedbackStatus.ERROR);
       }
     );
   }

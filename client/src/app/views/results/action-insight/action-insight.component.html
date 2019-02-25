@@ -1,0 +1,30 @@
+<mat-card>
+  <div class="action-content">{{ actionText }}</div>
+  <div class="action-summary">
+    <span class="action-success-number">{{actionSuccessCount}}</span> completed this task! 
+    <ng-container *ngIf="actionFailCount > 0">
+        But <span class="action-fail-number">{{actionFailCount}}</span> failed :(
+    </ng-container>
+  </div>
+  <mat-card-actions>
+    <span class="action-average-duration" *ngIf="actionAverageDurationOfSuccess" matTooltip="Average duration it took to users completed the task">
+      {{ (actionAverageDurationOfSuccess / 1000).toFixed(2) }}s
+    </span>
+    <span class="card-actions-grow"></span>
+    <span class="action-success-percentage">
+        {{(100 * actionSuccessCount / (actionFailCount + actionSuccessCount)).toFixed(1)}}%
+    </span>
+    <ng-container [ngSwitch]="actionFailCount > actionSuccessCount">
+      <mat-icon
+        *ngSwitchCase="true"
+        color="warn"
+        >close</mat-icon
+      >
+      <mat-icon
+        *ngSwitchCase="false"
+        color="primary"
+        >check</mat-icon
+      >
+    </ng-container>
+  </mat-card-actions>
+</mat-card>

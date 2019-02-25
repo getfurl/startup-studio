@@ -2,7 +2,7 @@
   <header class="view-header">Set up your UX test</header>
   <form #form class="furl-form" (submit)="submitWebsite($event)">
     <mat-form-field class="form-url-field">
-      <input #url matInput placeholder="Website URL" value="" />
+      <input #url matInput placeholder="Website URL" value="" autocomplete="off"/>
     </mat-form-field>
     <div class="form-actions">
       <button mat-flat-button color="primary" type="submit" [disabled]="submitInProgress | async">Next</button>

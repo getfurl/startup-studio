@@ -1,29 +1,62 @@
 <section class="furl-view">
   <header class="view-header">Can you perform the following tasks?</header>
   <ng-container *ngIf="feedbackRequest">
-      <div class="furl-url" (click)="openUrl()">{{feedbackRequest.url}}</div>
-      <section>
-        The creators of {{ feedbackRequest.url }} are interested in your opinion! What do you think about their website?
-      </section>
-      <ng-container *ngIf="feedbackRequest.prompts">
-        <div>Can you perform the following tasks?</div>
-        <app-prompt [prompt]="prompt" (start)="handlePromptStart($event, i)" (end)="handlePromptEnd($event, i)" *ngFor="let prompt of feedbackRequest.prompts; index as i"></app-prompt>
-      </ng-container>
-      <mat-form-field class="comments">
-          <mat-label>Written feedback tell the other half of the story!</mat-label>
-          <textarea 
-                  #written
-                  matInput
-                  cdkTextareaAutosize
-                  #autosize="cdkTextareaAutosize"
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="5"></textarea>
-      </mat-form-field>
-      <div class="rate-video">
-        Send video/images to <strong>{{feedbackRequestId.slice(0,6).toUpperCase() + '@Furl.io'}}</strong>
-      </div>
-      <div class="rate-submit">
-          <button mat-flat-button color="primary" (click)="sendFeedback()" [disabled]="!promptsDone">send feedback</button>
-      </div>
+    <div class="furl-url" (click)="openUrl()">{{ feedbackRequest.url }}</div>
+    <section>
+      The creators of {{ feedbackRequest.url }} are interested in your opinion!
+      What do you think about their website?
+    </section>
+    <ng-container *ngIf="feedbackRequest.prompts">
+      <div>Can you perform the following tasks?</div>
+      <app-prompt
+        [prompt]="prompt"
+        (start)="handlePromptStart($event, i)"
+        (end)="handlePromptEnd($event, i)"
+        *ngFor="let prompt of feedbackRequest.prompts; index as i"
+      ></app-prompt>
+    </ng-container>
+    <mat-form-field class="comments">
+      <mat-label>Written feedback tell the other half of the story!</mat-label>
+      <textarea
+        #written
+        matInput
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+      ></textarea>
+    </mat-form-field>
+    <div class="rate-video">
+      Send video/images to
+      <strong>{{
+        feedbackRequestId.slice(0, 6).toUpperCase() + "@Furl.io"
+      }}</strong>
+    </div>
+    <div class="rate-submit">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="sendFeedback()"
+        [disabled]="!promptsDone || (feedbackStatus | async) !== FEEDBACK_STATUS.INITIATED"
+      >
+        <ng-container [ngSwitch]="feedbackStatus | async">
+          <ng-template [ngSwitchCase]="FEEDBACK_STATUS.INITIATED">
+            send feedback
+          </ng-template>
+          <ng-template [ngSwitchCase]="FEEDBACK_STATUS.SENDING">
+            sending feedback
+          </ng-template>
+          <ng-template [ngSwitchCase]="FEEDBACK_STATUS.DELIVERED">
+            feedback sent
+          </ng-template>
+          <ng-template [ngSwitchCase]="FEEDBACK_STATUS.ERROR">
+            failed to send
+          </ng-template>
+          <ng-template ngSwitchDefault>
+            send feedback
+          </ng-template>
+        </ng-container>
+      </button>
+    </div>
   </ng-container>
 </section>

@@ -9,17 +9,20 @@ import { ClipboardModule } from 'ngx-clipboard'
 import { DbService } from './db.service';
 import { UserCommentComponent } from './user-comment/user-comment.component';
 import { AuthDialogService } from './auth/auth-dialog.service';
-import { ModeCaptionComponent } from './misc/mode-caption/mode-caption.component';
+import { ViewModeCaptionComponent } from './misc/header/view-mode-caption/view-mode-caption.component';
+import { HeaderComponent } from './misc/header/header.component';
+import { AppRoutingModule } from '../app-routing.module';
 
 const SHARED_DIALOGS = [DialogSignActionComponent];
-const SHARED_COMPONENTS = [ModeCaptionComponent, UserCommentComponent, AuthControlComponent, ...SHARED_DIALOGS];
+const SHARED_COMPONENTS = [HeaderComponent, ViewModeCaptionComponent, UserCommentComponent, AuthControlComponent, ...SHARED_DIALOGS];
 const SHARED_SERVICES = [AuthService, AuthDialogService, DbService]
+const SHARED_MODULES = [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule, ClipboardModule, AppRoutingModule];
 
 @NgModule({
-  imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule, ClipboardModule],
+  imports: [...SHARED_MODULES],
   providers: [...SHARED_SERVICES],
   declarations: [...SHARED_COMPONENTS],
   entryComponents: [...SHARED_DIALOGS],
-  exports: [...SHARED_COMPONENTS, CommonModule, FormsModule, ReactiveFormsModule, MaterialModule, ClipboardModule]
+  exports: [...SHARED_COMPONENTS, ...SHARED_MODULES]
 })
 export class SharedModule {}

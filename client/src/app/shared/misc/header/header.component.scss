@@ -1,0 +1,46 @@
+.furl-header {
+  color: white;
+  background: #6c63ff;
+  padding: 1rem;
+
+  .furl-logo {
+    font-size: 2rem;
+    font-weight: 700;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s text-shadow ease-in-out;
+    text-shadow: 1px 1px rgba(0,0,0,0.25);
+
+    &:hover {
+      text-shadow: 0 0 transparent !important;
+    }
+  }
+
+  &.app-view-mode-0 {
+    background: #51f1b5;
+    color: black;
+    .furl-logo {
+      text-shadow: 1px 1px rgba(255,255,255,0.75);
+    }
+  }
+
+  &.app-view-mode-1 {
+    background: #5951ff;
+    color: white;
+    .furl-logo {
+      text-shadow: 1px 1px rgba(0,0,0,0.25);
+    }
+  }
+
+  .furl-header-spacer {
+    flex-grow: 1;
+  }
+
+  .furl-header-feedback-button {
+    margin-right: 1rem;
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

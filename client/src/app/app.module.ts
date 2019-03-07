@@ -7,7 +7,6 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './views/home/home.component';
 import { RateComponent } from './views/rate/rate.component';
@@ -33,7 +32,6 @@ import { ActionInsightComponent } from './views/results/action-insight/action-in
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
     AngularFireModule.initializeApp(environment.firebase),

@@ -1,0 +1,9 @@
+<ng-container [ngSwitch]="viewMode">
+  <span class="furl-view-mode-caption" *ngSwitchCase="0">
+    admin
+  </span>
+  <span class="furl-view-mode-caption" *ngSwitchCase="1">
+    tester
+  </span>
+  <span *ngSwitchDefault> </span>
+</ng-container>

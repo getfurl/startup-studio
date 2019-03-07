@@ -93,6 +93,16 @@ body {
   background: #6c63ff;
   padding: 1rem;
 
+  &.app-mode-0 {
+    background: #E53935;
+    color: white;
+  }
+
+  &.app-mode-1 {
+    background: #4f47ff;
+    color: white;
+  }
+
   .furl-logo {
     font-size: 2rem;
     font-weight: 700;

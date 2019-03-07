@@ -9,9 +9,10 @@ import { ClipboardModule } from 'ngx-clipboard'
 import { DbService } from './db.service';
 import { UserCommentComponent } from './user-comment/user-comment.component';
 import { AuthDialogService } from './auth/auth-dialog.service';
+import { ModeCaptionComponent } from './misc/mode-caption/mode-caption.component';
 
 const SHARED_DIALOGS = [DialogSignActionComponent];
-const SHARED_COMPONENTS = [UserCommentComponent, AuthControlComponent, ...SHARED_DIALOGS];
+const SHARED_COMPONENTS = [ModeCaptionComponent, UserCommentComponent, AuthControlComponent, ...SHARED_DIALOGS];
 const SHARED_SERVICES = [AuthService, AuthDialogService, DbService]
 
 @NgModule({

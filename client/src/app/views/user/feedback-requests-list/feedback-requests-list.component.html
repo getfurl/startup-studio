@@ -1,0 +1,22 @@
+<section class="furl-view">
+    <header class="furl-h1 feedback-requests-header">
+      <span>Feedback Requests</span>
+      <button mat-flat-button color="primary" [routerLink]="['/submit']">New</button>
+    </header>
+    <mat-divider></mat-divider>
+    <mat-card class="feedback-requests-loading-card" *ngIf="!($feedbackRequests | async)">
+      <mat-card-title>Searching</mat-card-title>
+      <mat-card-content>for your feedback requests</mat-card-content>
+      <mat-progress-bar class="furl-card-progress-bar" mode="buffer"></mat-progress-bar>
+    </mat-card>
+    <section>
+      <mat-card *ngFor="let feedbackRequest of $feedbackRequests | async" class="feedback-request-summary-card">
+        <section>
+          <mat-card-title>{{ feedbackRequest.url}}</mat-card-title>
+          <mat-card-subtitle>{{ feedbackRequest.created | date : 'medium'}}</mat-card-subtitle>
+          <mat-card-content>
+          </mat-card-content>
+        </section>
+      </mat-card>
+    </section>
+  </section>

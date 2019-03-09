@@ -1,0 +1,23 @@
+<section class="furl-view">
+  <header class="furl-h1">
+    Feedback History
+  </header>
+  <mat-divider></mat-divider>
+  <mat-card class="feedback-history-loading-card" *ngIf="!($feedbackHistory | async)">
+    <mat-card-title>Searching</mat-card-title>
+    <mat-card-content>for feedback of user {{userNameFromRoute}}</mat-card-content>
+    <mat-progress-bar class="furl-card-progress-bar" mode="buffer"></mat-progress-bar>
+  </mat-card>
+  <section>
+    <mat-card *ngFor="let feedback of $feedbackHistory | async" class="feedback-summary-card">
+      <section>
+        <mat-card-title>{{ feedback.feedbackRequestUrl || feedback.feedbackRequestId}}</mat-card-title>
+        <mat-card-subtitle>{{ feedback.timestamp | date : 'medium'}}</mat-card-subtitle>
+        <mat-card-content>
+          <div>{{ feedback.written }}</div>
+          <div>Earned {{(feedback.written ? feedback.written.length * 100 : 314) | number:'1.0-0' }} gold</div>
+        </mat-card-content>
+      </section>
+    </mat-card>
+  </section>
+</section>

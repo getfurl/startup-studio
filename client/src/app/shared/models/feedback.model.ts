@@ -1,8 +1,10 @@
-import { FeedbackAction } from '.';
+import { FeedbackAction } from './feedback-action.model';
+import { FurlTimestamp } from './timestamp.model';
 
 export class Feedback {
   id?: string;
   feedbackRequestId: string;
+  feedbackRequestUrl: string;
   author: string;
   actions: FeedbackAction[];
   written: string;
@@ -11,26 +13,18 @@ export class Feedback {
   constructor(
     author: string,
     feedbackRequestId: string,
+    feedbackRequestUrl: string,
     actions: FeedbackAction[] = [],
     written: string,
     timestamp: Date | any = new Date()
   ) {
     this.author = author;
     this.feedbackRequestId = feedbackRequestId;
+    this.feedbackRequestUrl = feedbackRequestUrl || "";
     this.actions = actions;
-    this.written = written;
+    this.written = written || "";
 
-    if (timestamp.toDate) {
-      this.timestamp = timestamp.toDate();
-    }
-
-    if (timestamp.getTime) {
-      this.timestamp = new Date(timestamp.getTime());
-    }
-
-    if (!isNaN(timestamp)) {
-      this.timestamp = new Date(timestamp);
-    }
+    this.timestamp = FurlTimestamp.parse(timestamp);
   }
 
   static fromQueryDocumentSnapshot(
@@ -42,8 +36,8 @@ export class Feedback {
   static constructFromData(
     data: any
   ): Feedback {
-    const { author, feedbackRequestId, actions, written, timestamp } = data;
-    return new Feedback(author, feedbackRequestId, actions, written, timestamp);
+    const { author, feedbackRequestId, feedbackRequestUrl, actions, written, timestamp } = data;
+    return new Feedback(author, feedbackRequestId, feedbackRequestUrl, actions, written, timestamp);
   }
 
   static mapFromQuerySnapshot(

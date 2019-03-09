@@ -5,8 +5,11 @@ import { SubmitComponent } from './views/submit/submit.component';
 import { RateComponent } from './views/rate/rate.component';
 import { EditComponent } from './views/edit/edit.component';
 import { ResultsComponent } from './views/results/results.component';
+import { UserDashboardComponent } from './views/user/user-dashboard/user-dashboard.component';
+import { FeedbackRequestsListComponent } from './views/user/feedback-requests-list/feedback-requests-list.component';
+import { FeedbackHistoryComponent } from './views/user/feedback-history/feedback-history.component';
 
-import { CanActivateOwner, CanActivateTester, routeProviders } from './shared/auth/auth.guard';
+import { CanActivateAdmin, CanActivateTester, routeProviders } from './shared/auth/auth.guard';
 
 export enum RouteMode {
   Admin, Tester
@@ -18,12 +21,21 @@ export interface RouteData {
 
 const routeData = (routeData: RouteData): RouteData => Object.assign({}, routeData)
 
+/**
+ * user
+ * user/tests
+ * user/history
+ */
+
 const routes: Routes = [
   { path: "", component: HomeComponent },
-  { path: "submit", component: SubmitComponent, canActivate: [CanActivateOwner], data: routeData({ viewMode: RouteMode.Admin }) },
+  { path: "submit", component: SubmitComponent, canActivate: [CanActivateAdmin], data: routeData({ viewMode: RouteMode.Admin }) },
   { path: "rate/:id", component: RateComponent, canActivate: [CanActivateTester], data: routeData({ viewMode: RouteMode.Tester }) },
-  { path: "edit/:id", component: EditComponent, canActivate: [CanActivateOwner], data: routeData({ viewMode: RouteMode.Admin })},
-  { path: "results/:id", component: ResultsComponent, canActivate: [CanActivateOwner], data: routeData({ viewMode: RouteMode.Admin })}
+  { path: "edit/:id", component: EditComponent, canActivate: [CanActivateAdmin], data: routeData({ viewMode: RouteMode.Admin })},
+  { path: "results/:id", component: ResultsComponent, canActivate: [CanActivateAdmin], data: routeData({ viewMode: RouteMode.Admin })},
+  { path: ":userName", component: UserDashboardComponent},
+  { path: ":userName/tests", component: FeedbackRequestsListComponent, canActivate: [CanActivateAdmin], data: routeData({ viewMode: RouteMode.Admin }) },
+  { path: ":userName/history", component: FeedbackHistoryComponent, canActivate: [CanActivateTester], data: routeData({ viewMode: RouteMode.Tester }) }
 ];
 
 @NgModule({

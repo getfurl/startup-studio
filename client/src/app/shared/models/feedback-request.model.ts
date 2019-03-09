@@ -1,4 +1,5 @@
-import { FeedbackPrompt } from './';
+import { FeedbackPrompt } from './feedback-prompt.model';
+import { FurlTimestamp } from './timestamp.model';
 
 export class FeedbackRequest {
   id?: string;
@@ -11,12 +12,19 @@ export class FeedbackRequest {
     url: string,
     author: string,
     prompts: FeedbackPrompt[] = [],
-    created: Date = new Date()
+    created: Date | any = new Date()
   ) {
     this.url = url;
     this.author = author;
     this.prompts = prompts;
-    this.created = created;
+    this.created = FurlTimestamp.parse(created);
+  }
+
+  static constructFromData(
+    data: any
+  ): FeedbackRequest {
+    const { url, author, prompts, created } = data;
+    return new FeedbackRequest(url, author, prompts, created);
   }
 
   static fromQueryDocumentSnapshot(

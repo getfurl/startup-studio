@@ -25,7 +25,7 @@ export class CanActivateTester implements CanActivate {
 }
 
 @Injectable()
-export class CanActivateOwner implements CanActivate {
+export class CanActivateAdmin implements CanActivate {
   constructor(private _authService: AuthService) {}
 
   canActivate(
@@ -41,7 +41,7 @@ export class CanActivateOwner implements CanActivate {
 }
 
 export const routeProviders: Provider[] = [
-  CanActivateOwner,
+  CanActivateAdmin,
   CanActivateTester,
   AuthService
 ];

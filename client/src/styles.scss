@@ -1,5 +1,6 @@
 
 @import '~@angular/material/theming';
+@import '_constants';
 
 $md-furl-green: (
     50 : #eafdf6,
@@ -95,8 +96,23 @@ body {
 }
 
 .view-header {
-  font-size: 2rem;
+  font-size: $furl-font-size-1;
   text-align: center;
+}
+
+:root {
+  --font-size-h1: 1.25rem;
+}
+
+@media screen and (min-width: 27rem) {
+  :root {
+    --font-size-h1: 2rem;
+  }
+}
+
+.furl-h1 {
+  font-size: var(--font-size-h1);
+  margin-bottom: $furl-font-size-1/2;
 }
 
 .furl-form {
@@ -113,4 +129,9 @@ body {
   &:hover {
     text-decoration: underline;
   }
+}
+
+mat-progress-bar.furl-card-progress-bar {
+  position: absolute;
+  left: 0;
 }

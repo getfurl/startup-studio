@@ -1,0 +1,21 @@
+.user-dashboard-card {
+  margin: 0.5rem 0;
+
+  mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.user-dashboard-mini-card {
+  margin: 0.25rem 0;
+
+  mat-card-content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mini-card-caption {
+    font-weight: 700;
+  }
+}

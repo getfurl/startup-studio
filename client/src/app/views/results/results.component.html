@@ -1,17 +1,24 @@
 <section class="furl-view">
   <header class="view-header">
-    Here's what the <strong>users</strong> think about <span>{{ feedbackRequest ? feedbackRequest.url : 'your website' }}</span>
+    Here's what the <strong>users</strong> think about
+    <span>{{ feedbackRequest ? feedbackRequest.url : "your website" }}</span>
   </header>
   <ng-container *ngIf="feedbackRequest">
-    <ng-container [ngSwitch]="noResults">
-      <section class="results-intro" *ngSwitchCase="true">
-        No one submitted any feedback yet! Share the feedback request url.
-      </section>
-      <section class="results-intro" *ngSwitchDefault>
-        Helpful users everywhere searched far and wide for issues in your
-        website.
-      </section>
-    </ng-container>
+    <mat-card class="feedback-collecting-card">
+      <mat-card-title>Collecting feedback</mat-card-title>
+      <ng-container [ngSwitch]="true">
+        <mat-card-subtitle *ngSwitchCase="allFeedbackCount == 1">
+          {{ allFeedbackCount }} tester submitted their response
+        </mat-card-subtitle>
+        <mat-card-subtitle *ngSwitchCase="allFeedbackCount > 1">
+          {{ allFeedbackCount }} testers submitted their responses
+        </mat-card-subtitle>
+        <mat-card-subtitle *ngSwitchCase="allFeedbackCount == 0">
+          Searching for testers
+        </mat-card-subtitle>
+      </ng-container>
+      <mat-progress-bar mode="buffer" class="furl-card-progress-bar"></mat-progress-bar>
+    </mat-card>
     <ng-container *ngIf="actionInsights">
       <mat-divider></mat-divider>
       <app-action-insight
@@ -19,10 +26,13 @@
         *ngFor="let actionInsight of actionInsights"
       ></app-action-insight>
     </ng-container>
-    
+
     <mat-divider></mat-divider>
-    <app-user-comment class="user-comment-card" *ngFor="let writtenComment of writtenFeedback" [writtenComment]="writtenComment">
-   
+    <app-user-comment
+      class="user-comment-card"
+      *ngFor="let writtenComment of writtenFeedback"
+      [writtenComment]="writtenComment"
+    >
     </app-user-comment>
 
     <mat-divider></mat-divider>
@@ -35,7 +45,16 @@
       </section>
       <section class="url-share-wrapper">
         <input mat-input [value]="rateUrl" />
-        <button mat-flat-button color="accent" ngxClipboard [cbContent]="rateUrl" [disabled]="urlCopied" (click)="copy()">{{ urlCopied ? 'copied' : 'copy' }}</button>
+        <button
+          mat-flat-button
+          color="accent"
+          ngxClipboard
+          [cbContent]="rateUrl"
+          [disabled]="urlCopied"
+          (click)="copy()"
+        >
+          {{ urlCopied ? "copied" : "copy" }}
+        </button>
       </section>
     </mat-card>
   </ng-container>

@@ -2,8 +2,8 @@ import { AuthService } from "./auth/auth.service";
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { throwError, from, Observable, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Feedback, FeedbackRequest, FeedbackPrompt } from "./models";
+import { map, mergeMap } from "rxjs/operators";
+import { Feedback, FeedbackRequest, FeedbackPrompt, FurlUser } from "./models";
 
 @Injectable({
   providedIn: "root"
@@ -81,6 +81,62 @@ export class DbService {
     }
 
     return from(this._db.collection("feedback").add(feedback.toJSON()));
+  }
+  
+  /** returns a list of all feedback sent by the given user */
+  getFeedbackOfUser(user: firebase.User | FurlUser): Observable<Feedback[]> {
+    if (!user || !user.uid) {
+      return this.serviceError("getFeedbackOfUser - missing arguments");
+    }
+
+    return from(
+      this._db
+        .collection("feedback", ref =>
+          ref.where("author", "==", user.uid)
+        )
+        .valueChanges()
+    ).pipe(map((value) => {
+      return value.map((feedbackData) => {
+        return Feedback.constructFromData(feedbackData);
+      });
+    }));
+  }
+
+  getFeedbackRequestsOfUser(user: firebase.User | FurlUser): Observable<FeedbackRequest[]> {
+    if (!user || !user.uid) {
+      return this.serviceError("getFeedbackRequestsOfUser - missing arguments");
+    }
+
+    return from(
+      this._db
+        .collection("feedback-requests", ref =>
+          ref.where("author", "==", user.uid)
+        )
+        .valueChanges()
+    ).pipe(map((value) => {
+      return value.map((feedbackRequestsData) => {
+        return FeedbackRequest.constructFromData(feedbackRequestsData);
+      });
+    }));
+  }
+
+  /** returns the user record for the given username */
+  getUserRecordByUsername(userName: string): Observable<FurlUser> {
+    if (!userName) {
+      return this.serviceError("getUserByUsername - missing arguments");
+    }
+
+    return from(
+      this._db
+        .collection("user-records", ref =>
+          ref.where("userName", "==", userName).limit(1)
+        )
+        .valueChanges()
+        .pipe(
+          map(singleUserRecordAsArray => singleUserRecordAsArray.map(userRecord => FurlUser.constructFromData(userRecord))),
+          mergeMap(singleUserRecordAsArray => singleUserRecordAsArray) // This flattens the array to an expected single object
+        )
+    );
   }
 
   serviceError(message, data = {}) {

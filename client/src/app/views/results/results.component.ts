@@ -17,6 +17,7 @@ export class ResultsComponent implements OnInit {
 
   actionInsights = [];
   writtenFeedback = [];
+  allFeedbackCount: number;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -50,6 +51,7 @@ export class ResultsComponent implements OnInit {
 
       this.actionInsights = Object.entries(actions)
       this.writtenFeedback = written.sort((a: any, b: any) => b.timestamp - a.timestamp);
+      this.allFeedbackCount = allFeedback.length;
 
       this.noResults = (this.writtenFeedback.length + this.actionInsights.length) === 0;
     })

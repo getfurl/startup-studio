@@ -1,3 +1,4 @@
+export * from './timestamp.model';
 export * from './user.model';
 export * from './feedback-request.model';
 export * from './feedback.model';

@@ -1,0 +1,44 @@
+<section class="furl-view">
+  <header class="furl-h1">
+    <span>{{userNameFromRoute}}</span>
+  </header>
+  <mat-divider></mat-divider>
+  <mat-card class="user-dashboard-card" *ngIf="!($currentUser | async)">
+    <mat-card-title>Loading</mat-card-title>
+    <mat-progress-bar class="furl-card-progress-bar" mode="buffer"></mat-progress-bar>
+  </mat-card>
+  <section *ngIf="$currentUser | async">
+    <mat-card class="user-dashboard-card">
+      <mat-card-title>User Info</mat-card-title>
+      <mat-card-content>
+        {{$currentUser | async | json}}
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="user-dashboard-card">
+      <mat-card-title>Tests</mat-card-title>
+      <mat-card class="user-dashboard-mini-card" *ngFor="let feedbackRequest of $feedbackRequests | async">
+          <mat-card-content>
+            <span class="mini-card-caption">{{feedbackRequest.url}}</span>
+            <span>{{ feedbackRequest.created | date: 'medium' }}</span>
+          </mat-card-content>
+        </mat-card>
+      <mat-card-actions>
+        <button mat-flat-button color="accent" [routerLink]="['tests']">View All</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="user-dashboard-card">
+      <mat-card-title>Feedback History</mat-card-title>
+      <mat-card class="user-dashboard-mini-card" *ngFor="let feedback of $feedbackHistory | async">
+        <mat-card-content>
+          <span class="mini-card-caption">{{feedback.feedbackRequestUrl}}</span>
+          <span>{{ feedback.timestamp | date: 'medium' }}</span>
+        </mat-card-content>
+      </mat-card>
+      <mat-card-actions>
+        <button mat-flat-button color="accent" [routerLink]="['history']">View All</button>
+      </mat-card-actions>
+    </mat-card>
+  </section>
+</section>

@@ -89,6 +89,7 @@ export class RateComponent implements OnInit {
     const feedback = new Feedback(
       user ? user.uid : null,
       this.feedbackRequestId,
+      this.feedbackRequest.url,
       this.feedbackActions,
       this.writtenTextarea.nativeElement.value,
       new Date()

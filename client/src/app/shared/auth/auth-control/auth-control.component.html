@@ -1,10 +1,10 @@
 <ng-container [ngSwitch]="changingState">
   <mat-spinner *ngSwitchCase="true" [diameter]="25"></mat-spinner>
   <ng-container *ngSwitchDefault [ngSwitch]="!!(authState | async)">
-      <button mat-flat-button *ngSwitchCase="false" (click)="login()">Sign In</button>
+      <button mat-stroked-button *ngSwitchCase="false" (click)="login()">Sign In</button>
       <section *ngSwitchDefault>
-          <span class="auth-control-email mat-body">{{ email }}</span>
-          <button mat-flat-button (click)="logout()">Sign Out</button>
+          <button mat-button class="auth-control-email mat-body" [routerLink]="[email]">{{ email }}</button>
+          <button mat-stroked-button (click)="logout()">Sign Out</button>
         </section>
   </ng-container>
 </ng-container>

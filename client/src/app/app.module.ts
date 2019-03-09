@@ -16,6 +16,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ActionComponent } from './views/rate/action/action.component';
 import { ResultsComponent } from './views/results/results.component';
 import { ActionInsightComponent } from './views/results/action-insight/action-insight.component';
+import { UserDashboardComponent } from './views/user/user-dashboard/user-dashboard.component';
+import { FeedbackHistoryComponent } from './views/user/feedback-history/feedback-history.component';
+import { FeedbackRequestsListComponent } from './views/user/feedback-requests-list/feedback-requests-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { ActionInsightComponent } from './views/results/action-insight/action-in
     EditComponent,
     ActionComponent,
     ResultsComponent,
-    ActionInsightComponent
+    ActionInsightComponent,
+    UserDashboardComponent,
+    FeedbackHistoryComponent,
+    FeedbackRequestsListComponent
   ],
   imports: [
     BrowserModule,

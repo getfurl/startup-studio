@@ -1,3 +1,21 @@
+@import '~src/_constants.scss';
+
 .auth-control-email {
   margin-right: 0.5rem;
+
+  @media screen and (max-width:$furl-mobile-desktop-limit) {
+    & {
+      display: none;
+    }
+  }
+}
+
+.auth-control-icon {
+  margin-right: 0.5rem;
+
+  @media screen and (min-width:$furl-mobile-desktop-limit) {
+    & {
+      display: none;
+    }
+  }
 }

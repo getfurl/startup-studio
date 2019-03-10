@@ -101,11 +101,13 @@ body {
 }
 
 :root {
+  --font-size-h0: 1.75rem;
   --font-size-h1: 1.25rem;
 }
 
-@media screen and (min-width: 27rem) {
+@media screen and (min-width: $furl-mobile-desktop-limit) {
   :root {
+    --font-size-h0: 2.5rem;
     --font-size-h1: 2rem;
   }
 }

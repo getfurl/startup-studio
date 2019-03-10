@@ -1,6 +1,11 @@
+.home-header {
+  font-weight: 700;
+  font-size: 3rem;
+  margin-top: 6rem;
+}
 .home-tagline {
   margin: 1rem;
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -8,4 +13,23 @@
   text-align: center;
   padding: 1rem;
   transform: scale(1.5);
+}
+
+.home-section {
+  text-align: center;
+}
+
+.home-image {
+  max-width: 24rem;
+  margin: 2rem;
+}
+
+.home-feature {
+  text-align: center;
+  max-width: 36rem;
+  margin: 6rem 2rem 2rem auto;
+
+  &:nth-child(odd) {
+    margin: 6rem auto 2rem 2rem;
+  }
 }

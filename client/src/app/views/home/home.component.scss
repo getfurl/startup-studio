@@ -1,13 +1,18 @@
 @import '~src/_constants';
 
+.furl-view-home {
+  max-width: 80rem;
+}
+
 .home-header {
   font-weight: 700;
   font-size: var(--font-size-h0);
   margin-top: var(--font-size-h0);
 }
 .home-tagline {
-  margin: 1rem;
+  margin: 1rem auto;
   font-size: 1rem;
+  max-width: 50rem;
   text-align: center;
 }
 
@@ -31,7 +36,7 @@
   max-width: 36rem;
   margin: 4rem auto;
 
-  @media screen and (min-width: $furl-mobile-desktop-limit) {
+  @media screen and (min-width: 60rem) {
     &:nth-child(even) {
       margin: 6rem 2rem 2rem auto;
     }

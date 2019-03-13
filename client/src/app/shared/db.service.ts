@@ -22,7 +22,10 @@ export class DbService {
     feedbackRequest: FeedbackRequest
   ): Observable<firebase.firestore.DocumentReference> {
     if (!feedbackRequest.valid) {
-      return this.serviceError("createFeedbackCollector - missing arguments", feedbackRequest.toJSON());
+      return this.serviceError(
+        "createFeedbackCollector - missing arguments",
+        feedbackRequest.toJSON()
+      );
     }
 
     return from(
@@ -63,11 +66,13 @@ export class DbService {
           ref.where("feedbackRequestId", "==", feedbackRequestId)
         )
         .valueChanges()
-    ).pipe(map((value) => {
-      return value.map((feedbackData) => {
-        return Feedback.constructFromData(feedbackData);
-      });
-    }));
+    ).pipe(
+      map(value => {
+        return value.map(feedbackData => {
+          return Feedback.constructFromData(feedbackData);
+        });
+      })
+    );
   }
 
   addFeedback(
@@ -82,7 +87,7 @@ export class DbService {
 
     return from(this._db.collection("feedback").add(feedback.toJSON()));
   }
-  
+
   /** returns a list of all feedback sent by the given user */
   getFeedbackOfUser(user: firebase.User | FurlUser): Observable<Feedback[]> {
     if (!user || !user.uid) {
@@ -91,18 +96,20 @@ export class DbService {
 
     return from(
       this._db
-        .collection("feedback", ref =>
-          ref.where("author", "==", user.uid)
-        )
+        .collection("feedback", ref => ref.where("author", "==", user.uid))
         .valueChanges()
-    ).pipe(map((value) => {
-      return value.map((feedbackData) => {
-        return Feedback.constructFromData(feedbackData);
-      });
-    }));
+    ).pipe(
+      map(value => {
+        return value.map(feedbackData => {
+          return Feedback.constructFromData(feedbackData);
+        });
+      })
+    );
   }
 
-  getFeedbackRequestsOfUser(user: firebase.User | FurlUser): Observable<FeedbackRequest[]> {
+  getFeedbackRequestsOfUser(
+    user: firebase.User | FurlUser
+  ): Observable<FeedbackRequest[]> {
     if (!user || !user.uid) {
       return this.serviceError("getFeedbackRequestsOfUser - missing arguments");
     }
@@ -113,11 +120,13 @@ export class DbService {
           ref.where("author", "==", user.uid)
         )
         .valueChanges()
-    ).pipe(map((value) => {
-      return value.map((feedbackRequestsData) => {
-        return FeedbackRequest.constructFromData(feedbackRequestsData);
-      });
-    }));
+    ).pipe(
+      map(value => {
+        return value.map(feedbackRequestsData => {
+          return FeedbackRequest.constructFromData(feedbackRequestsData);
+        });
+      })
+    );
   }
 
   /** returns the user record for the given username */
@@ -133,9 +142,43 @@ export class DbService {
         )
         .valueChanges()
         .pipe(
-          map(singleUserRecordAsArray => singleUserRecordAsArray.map(userRecord => FurlUser.constructFromData(userRecord))),
+          map(singleUserRecordAsArray =>
+            singleUserRecordAsArray.map(userRecord =>
+              FurlUser.constructFromData(userRecord)
+            )
+          ),
           mergeMap(singleUserRecordAsArray => singleUserRecordAsArray) // This flattens the array to an expected single object
         )
+    );
+  }
+
+  updateUserName(uid: string, userName: string): Observable<any> {
+    const usernameRef = this._db.doc(`usernames/${userName}`);
+    return from(
+      usernameRef.set(FurlUser.constructUserNameHolder(uid)).then(() =>
+        this._db
+          .doc(`user-records/${uid}`)
+          .update({
+            userName: userName
+          })
+          .then(() => {
+            this._db
+              .collection("usernames", ref =>
+                ref
+                  .where("uid", "==", uid)
+              )
+              .get()
+              .subscribe(oldUsernameSnapshot => {
+                oldUsernameSnapshot.forEach(doc => {
+                  if (doc.id !== userName) {
+                    doc.ref.delete()
+                  }
+                });
+              });
+          })
+      ).catch(err => {
+        return this.serviceError(err);
+      })
     );
   }
 

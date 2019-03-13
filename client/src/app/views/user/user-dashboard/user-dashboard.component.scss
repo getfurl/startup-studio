@@ -1,9 +1,39 @@
+.user-h1 {
+  margin: 1rem;
+  text-align: center;
+}
+
 .user-dashboard-card {
   margin: 0.5rem 0;
+
+  mat-card-title {
+     margin: 1rem;
+  }
 
   mat-card-actions {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .user-dashboard-card-field {
+    display: block;
+    max-width: 18rem;
+    margin: 1rem;
+    margin-right: auto;
+  }
+
+  .user-dashboard-card-form-actions {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+
+    .error-icon {
+      margin: 0.5rem;
+    }
+  }
+
+  .user-dashboard-card-footer {
+    margin: 1rem;
   }
 }
 

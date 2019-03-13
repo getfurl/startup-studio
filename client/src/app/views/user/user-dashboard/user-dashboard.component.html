@@ -1,5 +1,5 @@
 <section class="furl-view">
-  <header class="furl-h1">
+  <header class="furl-h1 user-h1">
     <span>{{userNameFromRoute}}</span>
   </header>
   <mat-divider></mat-divider>
@@ -11,7 +11,20 @@
     <mat-card class="user-dashboard-card">
       <mat-card-title>User Info</mat-card-title>
       <mat-card-content>
-        {{$currentUser | async | json}}
+        <p class="user-dashboard-card-footer">Last sign in: {{($currentUser | async)?.timestamp | date: 'medium'}}</p>
+        <form (submit)="updateUserRecord($event)" [formGroup]="form">
+          <mat-form-field class="user-dashboard-card-field">
+            <input matInput placeholder="Email" disabled [value]="($currentUser | async)?.email">
+          </mat-form-field>
+
+          <mat-form-field class="user-dashboard-card-field">
+            <input matInput placeholder="Username" formControlName="userName" [value]="($currentUser | async)?.userName">
+          </mat-form-field>
+          <p class="user-dashboard-card-form-actions">
+            <button mat-flat-button color="primary" action="submit" [disabled]="form.pristine">Update</button>
+            <mat-icon class="error-icon" color="warn" *ngIf="form.errors && form.errors.noUser" matTooltip="Action required signing in">error</mat-icon>
+          </p>
+        </form>
       </mat-card-content>
     </mat-card>
 

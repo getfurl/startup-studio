@@ -177,6 +177,13 @@ export class DbService {
     );
   }
 
+  getUserRecordByUserId(uid: string): Observable<FurlUser> {
+    return this._db.doc(`user-records/${uid}`).snapshotChanges()
+    .pipe(
+      map(docSnapshot => FurlUser.constructFromSnapshot(docSnapshot.payload))
+    )
+  }
+
   updateUserName(uid: string, userName: string): Observable<any> {
     const usernameRef = this._db.doc(`usernames/${userName}`);
     return from(

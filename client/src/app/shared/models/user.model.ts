@@ -1,4 +1,5 @@
 import { FurlTimestamp } from './timestamp.model';
+import { DocumentSnapshot } from '@angular/fire/firestore';
 
 export class FurlUser {
   uid: string;
@@ -18,6 +19,15 @@ export class FurlUser {
   ): FurlUser {
     const {uid, email, userName, timestamp} = data;
     return new FurlUser(uid, email, userName, timestamp);
+  }
+
+  static constructFromSnapshot(
+    snapshot: DocumentSnapshot<{}>
+  ): FurlUser {
+    return FurlUser.constructFromData({
+      ...snapshot.data(),
+      id: snapshot.id
+    })
   }
 
   static constructUserNameHolder(uid: string) {

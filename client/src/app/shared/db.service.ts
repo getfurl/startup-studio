@@ -129,6 +129,27 @@ export class DbService {
     );
   }
 
+  getAvailableFeedbackRequests(): Observable<FeedbackRequest[]> {
+    return from(
+      this._db
+        .collection(
+          "feedback-requests",
+          ref => ref.orderBy("created", "desc") // where test is public/open
+        )
+        .snapshotChanges()
+    ).pipe(
+      map(value => {
+        return value.map(feedbackRequestsSnapshot => {
+          const feedbackRequestData = {
+            ...feedbackRequestsSnapshot.payload.doc.data(),
+            id: feedbackRequestsSnapshot.payload.doc.id
+          };
+          return FeedbackRequest.constructFromData(feedbackRequestData);
+        });
+      })
+    );
+  }
+
   /** returns the user record for the given username */
   getUserRecordByUsername(userName: string): Observable<FurlUser> {
     if (!userName) {
@@ -155,30 +176,30 @@ export class DbService {
   updateUserName(uid: string, userName: string): Observable<any> {
     const usernameRef = this._db.doc(`usernames/${userName}`);
     return from(
-      usernameRef.set(FurlUser.constructUserNameHolder(uid)).then(() =>
-        this._db
-          .doc(`user-records/${uid}`)
-          .update({
-            userName: userName
-          })
-          .then(() => {
-            this._db
-              .collection("usernames", ref =>
-                ref
-                  .where("uid", "==", uid)
-              )
-              .get()
-              .subscribe(oldUsernameSnapshot => {
-                oldUsernameSnapshot.forEach(doc => {
-                  if (doc.id !== userName) {
-                    doc.ref.delete()
-                  }
+      usernameRef
+        .set(FurlUser.constructUserNameHolder(uid))
+        .then(() =>
+          this._db
+            .doc(`user-records/${uid}`)
+            .update({
+              userName: userName
+            })
+            .then(() => {
+              this._db
+                .collection("usernames", ref => ref.where("uid", "==", uid))
+                .get()
+                .subscribe(oldUsernameSnapshot => {
+                  oldUsernameSnapshot.forEach(doc => {
+                    if (doc.id !== userName) {
+                      doc.ref.delete();
+                    }
+                  });
                 });
-              });
-          })
-      ).catch(err => {
-        return this.serviceError(err);
-      })
+            })
+        )
+        .catch(err => {
+          return this.serviceError(err);
+        })
     );
   }
 

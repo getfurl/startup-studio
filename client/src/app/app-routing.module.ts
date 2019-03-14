@@ -10,6 +10,7 @@ import { FeedbackRequestsListComponent } from './views/user/feedback-requests-li
 import { FeedbackHistoryComponent } from './views/user/feedback-history/feedback-history.component';
 
 import { CanActivateAdmin, CanActivateTester, routeProviders } from './shared/auth/auth.guard';
+import { BrowserComponent } from './views/browser/browser.component';
 
 export enum RouteMode {
   Admin, Tester
@@ -30,6 +31,7 @@ const routeData = (routeData: RouteData): RouteData => Object.assign({}, routeDa
 const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "submit", component: SubmitComponent, canActivate: [CanActivateAdmin], data: routeData({ viewMode: RouteMode.Admin }) },
+  { path: "browse", component: BrowserComponent, canActivate: [CanActivateTester], data: routeData({ viewMode: RouteMode.Tester }) },
   { path: "rate/:id", component: RateComponent, canActivate: [CanActivateTester], data: routeData({ viewMode: RouteMode.Tester }) },
   { path: "edit/:id", component: EditComponent, canActivate: [CanActivateAdmin], data: routeData({ viewMode: RouteMode.Admin })},
   { path: "results/:id", component: ResultsComponent, canActivate: [CanActivateAdmin], data: routeData({ viewMode: RouteMode.Admin })},

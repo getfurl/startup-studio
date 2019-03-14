@@ -12,26 +12,28 @@ export class FeedbackRequest {
     url: string,
     author: string,
     prompts: FeedbackPrompt[] = [],
-    created: Date | any = new Date()
+    created: Date | any = new Date(),
+    id: string = null
   ) {
     this.url = url;
     this.author = author;
     this.prompts = prompts;
     this.created = FurlTimestamp.parse(created);
+    this.id = id;
   }
 
   static constructFromData(
     data: any
   ): FeedbackRequest {
-    const { url, author, prompts, created } = data;
-    return new FeedbackRequest(url, author, prompts, created);
+    const { url, author, prompts, created, id } = data;
+    return new FeedbackRequest(url, author, prompts, created, id);
   }
 
   static fromQueryDocumentSnapshot(
     doc: firebase.firestore.QueryDocumentSnapshot
   ): FeedbackRequest {
     const { url, author, prompts, created } = doc.data();
-    return new FeedbackRequest(url, author, prompts, created);
+    return new FeedbackRequest(url, author, prompts, created, doc.id);
   }
 
   static mapFromQuerySnapshot(

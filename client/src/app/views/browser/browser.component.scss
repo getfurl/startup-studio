@@ -1,0 +1,22 @@
+.browser-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.browser-summary-card {
+  margin: 1rem 0;
+  
+  mat-card-actions {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.browser-loading-card {
+  margin: 1rem 0;
+}

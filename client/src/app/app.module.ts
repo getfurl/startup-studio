@@ -19,6 +19,7 @@ import { ActionInsightComponent } from './views/results/action-insight/action-in
 import { UserDashboardComponent } from './views/user/user-dashboard/user-dashboard.component';
 import { FeedbackHistoryComponent } from './views/user/feedback-history/feedback-history.component';
 import { FeedbackRequestsListComponent } from './views/user/feedback-requests-list/feedback-requests-list.component';
+import { BrowserComponent } from './views/browser/browser.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FeedbackRequestsListComponent } from './views/user/feedback-requests-li
     ActionInsightComponent,
     UserDashboardComponent,
     FeedbackHistoryComponent,
-    FeedbackRequestsListComponent
+    FeedbackRequestsListComponent,
+    BrowserComponent
   ],
   imports: [
     BrowserModule,

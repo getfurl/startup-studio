@@ -1,5 +1,15 @@
 .feedback-request-summary-card {
   margin: 1rem 0;
+
+  mat-card-actions {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+
+    button {
+      margin-left: 1rem;
+    }
+  }
 }
 
 .feedback-requests-loading-card {

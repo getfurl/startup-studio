@@ -14,8 +14,10 @@
         <section>
           <mat-card-title>{{ feedbackRequest.url}}</mat-card-title>
           <mat-card-subtitle>{{ feedbackRequest.created | date : 'medium'}}</mat-card-subtitle>
-          <mat-card-content>
-          </mat-card-content>
+          <mat-card-actions>
+            <button mat-flat-button color="accent" [routerLink]="['/edit', feedbackRequest.id]">Configure</button>
+            <button mat-flat-button color="primary" [routerLink]="['/results', feedbackRequest.id]">Results</button>
+          </mat-card-actions>
         </section>
       </mat-card>
     </section>

@@ -119,10 +119,14 @@ export class DbService {
         .collection("feedback-requests", ref =>
           ref.where("author", "==", user.uid)
         )
-        .valueChanges()
+        .snapshotChanges()
     ).pipe(
       map(value => {
-        return value.map(feedbackRequestsData => {
+        return value.map(feedbackRequestSnapshot => {
+          const feedbackRequestsData = {
+            ...feedbackRequestSnapshot.payload.doc.data(),
+            id: feedbackRequestSnapshot.payload.doc.id
+          }
           return FeedbackRequest.constructFromData(feedbackRequestsData);
         });
       })

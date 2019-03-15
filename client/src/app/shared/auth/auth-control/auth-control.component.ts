@@ -20,7 +20,7 @@ export class AuthControlComponent implements OnInit {
     this.authState = this._authService.state;
     this.authState
     .pipe(
-      switchMap(user => user ? this._dbService.getUserRecordByUserId(user.uid) : of(null))
+      switchMap(user => user ? this._dbService.getUserRecordByUserId(user.uid, user) : of(null))
     )
     .subscribe(user => {
       this.username = user ? (user.userName || user.email) : null;

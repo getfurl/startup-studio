@@ -1,7 +1,7 @@
 import { AuthService } from "./auth/auth.service";
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { throwError, from, Observable, of } from "rxjs";
+import { throwError, from, Observable } from "rxjs";
 import { map, mergeMap } from "rxjs/operators";
 import { Feedback, FeedbackRequest, FeedbackPrompt, FurlUser } from "./models";
 
@@ -177,11 +177,11 @@ export class DbService {
     );
   }
 
-  getUserRecordByUserId(uid: string): Observable<FurlUser> {
+  getUserRecordByUserId(uid: string, user: firebase.User): Observable<FurlUser | firebase.User> {
     return this._db.doc(`user-records/${uid}`).snapshotChanges()
     .pipe(
-      map(docSnapshot => FurlUser.constructFromSnapshot(docSnapshot.payload))
-    )
+      map(docSnapshot => docSnapshot.payload.exists ? FurlUser.constructFromSnapshot(docSnapshot.payload) : user)
+    );
   }
 
   updateUserName(uid: string, userName: string): Observable<any> {

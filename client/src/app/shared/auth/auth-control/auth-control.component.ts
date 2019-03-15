@@ -1,7 +1,7 @@
 import { MatDialog } from '@angular/material';
 import { AuthService } from "./../auth.service";
 import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { switchMap } from 'rxjs/operators';
 import { DialogSignActionComponent } from '../../dialogs/dialog-sign-action/dialog-sign-action.component';
 import { DbService } from '../../db.service';
@@ -20,7 +20,7 @@ export class AuthControlComponent implements OnInit {
     this.authState = this._authService.state;
     this.authState
     .pipe(
-      switchMap(user => this._dbService.getUserRecordByUserId(user.uid))
+      switchMap(user => user ? this._dbService.getUserRecordByUserId(user.uid) : of(null))
     )
     .subscribe(user => {
       this.username = user ? (user.userName || user.email) : null;

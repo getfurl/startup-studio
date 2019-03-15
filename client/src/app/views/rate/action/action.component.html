@@ -1,5 +1,12 @@
 <mat-card>
   <div [class.hidden]="(action._state | async) == FeedbackActionState.INIT" class="action-content">{{action.text}}</div>
+  <div [class.hidden]="(action._state | async) == FeedbackActionState.INIT" class="action-speech-wrapper">
+      <mat-icon class="action-speech-icon">record_voice_over</mat-icon>
+      <div class="action-speech">
+        <span #speechElement></span>
+        <span class="action-speech-transcribing" *ngIf="(action._state | async) == FeedbackActionState.START">(transcribing)</span>
+      </div>
+  </div>
   <mat-progress-bar *ngIf="(action._state | async) == FeedbackActionState.START" mode="buffer"></mat-progress-bar>
   <ng-container [ngSwitch]="action._state | async">
   <mat-card-actions *ngSwitchDefault>

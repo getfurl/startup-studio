@@ -9,13 +9,14 @@ import { ClipboardModule } from 'ngx-clipboard'
 import { DbService } from './db.service';
 import { UserCommentComponent } from './user-comment/user-comment.component';
 import { AuthDialogService } from './auth/auth-dialog.service';
+import { SpeechService } from './speech.service';
 import { ViewModeCaptionComponent } from './misc/header/view-mode-caption/view-mode-caption.component';
 import { HeaderComponent } from './misc/header/header.component';
 import { AppRoutingModule } from '../app-routing.module';
 
 const SHARED_DIALOGS = [DialogSignActionComponent];
 const SHARED_COMPONENTS = [HeaderComponent, ViewModeCaptionComponent, UserCommentComponent, AuthControlComponent, ...SHARED_DIALOGS];
-const SHARED_SERVICES = [AuthService, AuthDialogService, DbService]
+const SHARED_SERVICES = [AuthService, AuthDialogService, DbService, SpeechService]
 const SHARED_MODULES = [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule, ClipboardModule, AppRoutingModule];
 
 @NgModule({

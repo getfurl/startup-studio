@@ -1,9 +1,12 @@
+@import "~src/_constants";
+
 :host {
   margin: 1rem;
 }
 
 .action-content {
   font-size: 1.25rem;
+  font-weight: 700;
 
   &.hidden {
     filter: blur(7px);
@@ -23,4 +26,45 @@ mat-progress-bar {
   position: absolute;
   left: 0;
   bottom: 1.5rem;
+}
+
+.action-speech-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: 0.3s opacity ease-in-out;
+
+  &.hidden {
+    opacity: 0;
+  }
+}
+
+.action-speech-icon {
+  margin: 0.5rem;
+  font-size: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-speech {
+  margin: 0.5rem;
+  color: $furl-speech-user-color;
+}
+
+.action-speech-transcribing {
+  margin: 0.5rem;
+  color: $furl-speech-color;
+  animation: glow 0.7s ease-in-out 0s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

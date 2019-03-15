@@ -1,10 +1,18 @@
 <section class="furl-view">
   <header class="view-header">Complete the following tasks</header>
   <section class="form-intro">
-      Narrate your experience to express your thoughts.
+    Narrate your experience to express your thoughts.
   </section>
   <ng-container *ngIf="feedbackRequest">
-    <div class="furl-url" (click)="openUrl()">{{ feedbackRequest.url }}</div>
+    <div
+      class="furl-url"
+      (click)="openUrl()"
+      matRipple
+      matRippleUnbounded="true"
+      matRippleRadius="50"
+    >
+      {{ feedbackRequest.url }}
+    </div>
     <ng-container *ngIf="feedbackActions">
       <app-action
         [action]="action"
@@ -30,7 +38,9 @@
         mat-flat-button
         color="primary"
         (click)="sendFeedback()"
-        [disabled]="!allActionsDone || (feedbackStatus | async) !== FeedbackStatus.INIT"
+        [disabled]="
+          !allActionsDone || (feedbackStatus | async) !== FeedbackStatus.INIT
+        "
       >
         <ng-container [ngSwitch]="feedbackStatus | async">
           <ng-template [ngSwitchCase]="FeedbackStatus.INIT">

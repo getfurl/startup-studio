@@ -103,7 +103,8 @@ export class DbService {
         return value.map(feedbackData => {
           return Feedback.constructFromData(feedbackData);
         });
-      })
+      }),
+      map(feedbackResponses => feedbackResponses.sort((f1:any, f2:any) => f2.timestamp - f1.timestamp))
     );
   }
 
@@ -129,7 +130,8 @@ export class DbService {
           }
           return FeedbackRequest.constructFromData(feedbackRequestsData);
         });
-      })
+      }),
+      map(feedbackRequests => feedbackRequests.sort((f1:any, f2:any) => f2.created - f1.created))
     );
   }
 

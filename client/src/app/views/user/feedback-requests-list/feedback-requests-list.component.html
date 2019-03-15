@@ -1,7 +1,7 @@
 <section class="furl-view">
     <header class="furl-h1 feedback-requests-header">
       <span>Your Feedback Requests</span>
-      <button mat-flat-button color="primary" [routerLink]="['/submit']">New</button>
+      <button mat-flat-button color="primary" [routerLink]="['/submit']">Create</button>
     </header>
     <mat-divider></mat-divider>
     <mat-card class="feedback-requests-loading-card" *ngIf="!($feedbackRequests | async)">

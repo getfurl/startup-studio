@@ -1,3 +1,5 @@
+@import '~src/_constants';
+
 .browser-header {
   display: flex;
   justify-content: space-between;
@@ -6,6 +8,10 @@
 
 .browser-summary-card {
   margin: 1rem 0;
+
+  mat-card-title {
+    font-size: $furl-card-title-size;
+  }
   
   mat-card-actions {
     margin: 0;
@@ -14,6 +20,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .browser-summary-time-ago {
+    font-size: 0.75rem;
+    opacity: 0.75;
   }
 }
 

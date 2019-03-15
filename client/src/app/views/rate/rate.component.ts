@@ -1,3 +1,4 @@
+import { SnackbarService } from './../../shared/snackbar.service';
 import { BehaviorSubject } from "rxjs";
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
@@ -39,7 +40,8 @@ export class RateComponent implements OnInit {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _dbService: DbService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _snackbarService: SnackbarService
     ) {
     this._activatedRoute.params.subscribe((params: Params) => {
       this.feedbackRequestId = params.id;
@@ -100,6 +102,7 @@ export class RateComponent implements OnInit {
     this._dbService.addFeedback(feedback).subscribe(
       () => {
         this.feedbackStatus.next(this.FeedbackStatus.DELIVERED);
+        this._snackbarService.success("Feedback sent!");
       },
       () => {
         this.feedbackStatus.next(this.FeedbackStatus.ERROR);

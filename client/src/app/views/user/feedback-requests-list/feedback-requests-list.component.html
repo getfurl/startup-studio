@@ -1,6 +1,6 @@
 <section class="furl-view">
     <header class="furl-h1 feedback-requests-header">
-      <span>Feedback Requests</span>
+      <span>Your Feedback Requests</span>
       <button mat-flat-button color="primary" [routerLink]="['/submit']">New</button>
     </header>
     <mat-divider></mat-divider>
@@ -13,8 +13,12 @@
       <mat-card *ngFor="let feedbackRequest of $feedbackRequests | async" class="feedback-request-summary-card">
         <section>
           <mat-card-title>{{ feedbackRequest.url}}</mat-card-title>
-          <mat-card-subtitle>{{ feedbackRequest.created | date : 'medium'}}</mat-card-subtitle>
+          <mat-card-content>
+            Includes {{ feedbackRequest.prompts.length }} tasks
+          </mat-card-content>
           <mat-card-actions>
+            <span class="summary-time-ago" [matTooltip]="feedbackRequest.created | date : 'medium'">{{ feedbackRequest.created | timeAgo }}</span>
+            <span class="summary-card-flex-grow"></span>
             <button mat-flat-button color="accent" [routerLink]="['/edit', feedbackRequest.id]">Configure</button>
             <button mat-flat-button color="primary" [routerLink]="['/results', feedbackRequest.id]">Results</button>
           </mat-card-actions>

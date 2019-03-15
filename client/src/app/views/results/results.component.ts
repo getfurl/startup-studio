@@ -31,7 +31,7 @@ export class ResultsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rateUrl = location.host + "/rate/" + this.feedbackRequestId;
+    this.rateUrl = "https://" + location.host + "/rate/" + this.feedbackRequestId;
   }
 
   loadFeedback(feedbackRequestId) {

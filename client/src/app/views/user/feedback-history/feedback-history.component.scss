@@ -1,5 +1,23 @@
+@import '~src/_constants';
+
 .feedback-summary-card {
   margin: 1rem 0;
+
+  mat-card-title {
+    font-size: $furl-card-title-size;
+  }
+
+  mat-card-actions {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .summary-time-ago {
+    font-size: 0.75rem;
+    opacity: 0.75;
+  }
 }
 
 .feedback-history-loading-card {

@@ -17,7 +17,7 @@
       ></app-action>
     </ng-container>
     <mat-form-field class="comments">
-      <mat-label>Written feedback tell the other half of the story!</mat-label>
+      <mat-label>Written feedback tells the other half of the story!</mat-label>
       <textarea
         #written
         matInput
@@ -27,12 +27,6 @@
         cdkAutosizeMaxRows="5"
       ></textarea>
     </mat-form-field>
-    <div class="rate-video">
-      Send video/images to
-      <strong>{{
-        feedbackRequestId.slice(0, 6).toUpperCase() + "@Furl.io"
-      }}</strong>
-    </div>
     <div class="rate-submit">
       <button
         mat-flat-button

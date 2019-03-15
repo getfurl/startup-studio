@@ -28,4 +28,8 @@ export class SnackbarService {
   subscriptionError(err: any) {
     this._snackbar.open(err.message || "Something's not right");
   }
+
+  success(msg: string) {
+    this._snackbar.open(msg);
+  }
 }

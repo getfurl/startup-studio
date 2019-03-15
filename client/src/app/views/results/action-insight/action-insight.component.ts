@@ -46,7 +46,6 @@ export class ActionInsightComponent implements OnInit {
   }
 
   showTranscriptions() {
-    console.log(this.actionInsight);
     this._dialog.open(DialogTranscriptionsComponent, {
       data: {
         transcriptions: this.transcriptions

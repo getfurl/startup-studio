@@ -1,13 +1,11 @@
 <section class="furl-view">
-  <header class="view-header">Can you perform the following tasks?</header>
+  <header class="view-header">Complete the following tasks</header>
+  <section class="form-intro">
+      Narrate your experience to express your thoughts.
+  </section>
   <ng-container *ngIf="feedbackRequest">
     <div class="furl-url" (click)="openUrl()">{{ feedbackRequest.url }}</div>
-    <section>
-      The creators of {{ feedbackRequest.url }} are interested in your opinion.
-      What do you think about their website?
-    </section>
     <ng-container *ngIf="feedbackActions">
-      <div>Can you perform the following tasks?</div>
       <app-action
         [action]="action"
         [ongoingAction]="ongoingAction"

@@ -1,12 +1,33 @@
 <section class="furl-view">
-  <header class="view-header">Set up your UX test</header>
+  <header class="view-header">Enter Your Website</header>
+  <section class="form-intro">
+    What website are you interested in testing?
+  </section>
   <form #form class="furl-form" (submit)="submitWebsite($event)">
-    <mat-form-field class="form-url-field">
-      <input #url matInput placeholder="Website URL" value="" autocomplete="off"/>
-    </mat-form-field>
-    <div class="form-actions">
-      <button mat-flat-button color="primary" type="submit" [disabled]="submitInProgress | async">Next</button>
-    </div>
+    <mat-card class="form-card">
+      <mat-form-field class="form-url-field">
+        <input
+          #url
+          matInput
+          placeholder="Starting URL"
+          value=""
+          autocomplete="off"
+        />
+        <mat-hint>The entry point for users providing feedback</mat-hint>
+      </mat-form-field>
+
+      <section></section>
+    </mat-card>
+    <mat-divider></mat-divider>
+    <footer class="footer-actions">
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="submitInProgress | async"
+      >
+        Next
+      </button>
+    </footer>
   </form>
-  <section></section>
 </section>

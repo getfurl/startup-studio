@@ -111,6 +111,6 @@ export class RateComponent implements OnInit {
   }
 
   openUrl() {
-    window.open("https://" + this.feedbackRequest.url);
+    window.open("http://" + this.feedbackRequest.url);
   }
 }

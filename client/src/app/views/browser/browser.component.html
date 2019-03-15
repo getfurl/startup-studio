@@ -13,7 +13,7 @@
       <section>
         <mat-card-title>{{ feedbackRequest.url}}</mat-card-title>
         <mat-card-content>
-            <p>Includes {{ feedbackRequest.prompts.length }} tasks</p>
+            <app-tasks-count [feedbackRequest]="feedbackRequest"></app-tasks-count>
         </mat-card-content>
         <mat-card-actions>
             <span class="browser-summary-time-ago" [matTooltip]="feedbackRequest.created | date: 'medium'">Posted {{ feedbackRequest.created | timeAgo }}</span>

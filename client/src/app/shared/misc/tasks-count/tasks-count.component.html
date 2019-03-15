@@ -1,0 +1,11 @@
+<ng-container [ngSwitch]="true">
+  <mat-card-subtitle *ngSwitchCase="feedbackRequest.prompts.length == 1">
+    Includes {{ feedbackRequest.prompts.length }} task
+  </mat-card-subtitle>
+  <mat-card-subtitle *ngSwitchCase="feedbackRequest.prompts.length > 1">
+    Includes {{ feedbackRequest.prompts.length }} tasks
+  </mat-card-subtitle>
+  <mat-card-subtitle *ngSwitchCase="feedbackRequest.prompts.length == 0">
+    No tasks for this test
+  </mat-card-subtitle>
+</ng-container>

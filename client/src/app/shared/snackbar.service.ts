@@ -30,6 +30,8 @@ export class SnackbarService {
   }
 
   success(msg: string) {
-    this._snackbar.open(msg);
+    this._snackbar.open(msg, null, {
+      duration: 3000
+    });
   }
 }

@@ -49,7 +49,7 @@ export class ResultsComponent implements OnInit {
         });
       });
 
-      this.actionInsights = Object.entries(actions)
+      this.actionInsights = Object.entries(actions);
       this.writtenFeedback = written.sort((a: any, b: any) => b.timestamp - a.timestamp);
       this.allFeedbackCount = allFeedback.length;
 

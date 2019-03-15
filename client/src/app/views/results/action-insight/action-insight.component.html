@@ -1,5 +1,8 @@
 <mat-card>
-  <div class="action-content">{{ actionText }}</div>
+  <div class="action-header">
+      <div class="action-content">{{ actionText }}</div>
+      <mat-icon class="transcriptions-icon" (click)="showTranscriptions()">record_voice_over</mat-icon>
+  </div>
   <div class="action-summary">
     <span class="action-success-number">{{actionSuccessCount}}</span> completed this task! 
     <ng-container *ngIf="actionFailCount > 0">

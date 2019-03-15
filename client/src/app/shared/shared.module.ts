@@ -1,3 +1,4 @@
+import { DialogTranscriptionsComponent } from './dialogs/dialog-transcriptions/dialog-transcriptions.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
 import { AuthControlComponent } from "./auth/auth-control/auth-control.component";
@@ -14,7 +15,7 @@ import { ViewModeCaptionComponent } from './misc/header/view-mode-caption/view-m
 import { HeaderComponent } from './misc/header/header.component';
 import { AppRoutingModule } from '../app-routing.module';
 
-const SHARED_DIALOGS = [DialogSignActionComponent];
+const SHARED_DIALOGS = [DialogSignActionComponent, DialogTranscriptionsComponent];
 const SHARED_COMPONENTS = [HeaderComponent, ViewModeCaptionComponent, UserCommentComponent, AuthControlComponent, ...SHARED_DIALOGS];
 const SHARED_SERVICES = [AuthService, AuthDialogService, DbService, SpeechService]
 const SHARED_MODULES = [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule, ClipboardModule, AppRoutingModule];

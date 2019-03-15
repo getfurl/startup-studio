@@ -48,7 +48,10 @@ export class ActionComponent implements OnInit {
       )
     })
 
-    this.speechBuilder.subscribe(value => this.speechElement.nativeElement.innerHTML = value);
+    this.speechBuilder.subscribe(value => {
+      this.speechElement.nativeElement.innerHTML = value;
+      this.action.transcription = value;
+    });
   }
 
   start() {

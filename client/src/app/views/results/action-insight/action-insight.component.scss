@@ -2,6 +2,21 @@
   margin: 1rem;
 }
 
+
+.action-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transcriptions-icon {
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
 .action-content {
   font-size: 1.25rem;
   font-weight: 700;

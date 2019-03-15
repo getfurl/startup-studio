@@ -11,6 +11,7 @@ export class FeedbackAction {
   text: string;
   success: boolean;
   duration: number;
+  transcription: string;
 
   static FeedbackActionState = FeedbackActionState;
 
@@ -22,9 +23,11 @@ export class FeedbackAction {
     text: string,
     success?: boolean,
     duration?: number,
-    state?: FeedbackActionState
+    state?: FeedbackActionState,
+    transcription: string = ""
   ) {
     this.text = text;
+    this.transcription = transcription;
 
     if (success) {
       this.success = success;
@@ -67,11 +70,12 @@ export class FeedbackAction {
   }
 
   toJSON() {
-    const { text, success, duration } = this;
+    const { text, success, duration, transcription } = this;
     return {
       text,
       success,
-      duration
+      duration,
+      transcription
     };
   }
 }

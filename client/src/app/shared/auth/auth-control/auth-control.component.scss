@@ -1,8 +1,6 @@
 @import '~src/_constants.scss';
 
-.auth-control-username {
-  margin-right: 0.5rem;
-
+.auth-control-desktop-only {
   @media screen and (max-width:$furl-mobile-desktop-limit) {
     & {
       display: none;
@@ -10,12 +8,19 @@
   }
 }
 
-.auth-control-icon {
-  margin-right: 0.5rem;
-
+.auth-control-mobile-only {
   @media screen and (min-width:$furl-mobile-desktop-limit) {
     & {
       display: none;
     }
   }
+
+}
+
+.auth-control-icon {
+  min-width: 0;
+}
+
+.auth-control-username {
+  margin-right: 0.5rem;
 }

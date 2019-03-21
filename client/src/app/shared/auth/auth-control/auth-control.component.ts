@@ -1,10 +1,10 @@
-import { MatDialog } from '@angular/material';
+import { MatDialog } from "@angular/material";
 import { AuthService } from "./../auth.service";
 import { Component, OnInit } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { switchMap } from 'rxjs/operators';
-import { DialogSignActionComponent } from '../../dialogs/dialog-sign-action/dialog-sign-action.component';
-import { DbService } from '../../db.service';
+import { switchMap } from "rxjs/operators";
+import { DialogSignActionComponent } from "../../dialogs/dialog-sign-action/dialog-sign-action.component";
+import { DbService } from "../../db.service";
 
 @Component({
   selector: "app-auth-control",
@@ -16,23 +16,33 @@ export class AuthControlComponent implements OnInit {
   username: string;
   changingState = true;
 
-  constructor(private _authService: AuthService, private _dialog: MatDialog, private _dbService: DbService) {
+  constructor(
+    private _authService: AuthService,
+    private _dialog: MatDialog,
+    private _dbService: DbService
+  ) {
     this.authState = this._authService.state;
     this.authState
-    .pipe(
-      switchMap(user => user ? this._dbService.getUserRecordByUserId(user.uid, user) : of(null))
-    )
-    .subscribe(user => {
-      this.username = user ? (user.userName || user.email) : null;
-      this.changingState = false;
-    });
+      .pipe(
+        switchMap(user =>
+          user
+            ? this._dbService.getUserRecordByUserId(user.uid, user)
+            : of(null)
+        )
+      )
+      .subscribe(user => {
+        this.username = user ? user.userName || user.email : null;
+        this.changingState = false;
+      });
   }
 
   ngOnInit() {}
 
   login() {
     this.changingState = true;
-    this._dialog.open(DialogSignActionComponent);
+    this._dialog.open(DialogSignActionComponent).afterClosed().subscribe((result) => {
+      this.changingState = !result ? false : this.changingState;
+    });
   }
 
   logout() {

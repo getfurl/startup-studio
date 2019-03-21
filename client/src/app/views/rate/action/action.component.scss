@@ -2,6 +2,46 @@
 
 :host {
   margin: 1rem;
+
+  &:hover {
+    .action-detailed {
+      transition: all ease-in-out 0.3s 0.2s;
+      max-height: 15rem;
+      opacity: 1;
+
+      padding: 1rem 1rem 0 1rem;
+      margin: -1rem;
+    }
+  }
+}
+
+mat-card .action-detailed {
+  transition: all ease-in-out 0.3s;
+  margin: 0;
+  max-height: 0;
+  padding: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+mat-card.init .action-detailed {
+  margin: 0;
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+}
+
+mat-card.focus .action-detailed {
+  max-height: 15rem;
+  opacity: 1;
+
+  padding: 1rem 1rem 0 1rem;
+  margin: -1rem;
+}
+
+mat-card-actions {
+  padding-bottom: 0;
+  margin-bottom: 0.5rem;
 }
 
 .action-content {
@@ -11,6 +51,13 @@
   &.hidden {
     filter: blur(7px);
   }
+}
+
+.action-status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1rem;
 }
 
 mat-card-actions {
@@ -48,9 +95,23 @@ mat-progress-bar {
   justify-content: center;
 }
 
+.long-text, .long-text-mobile {
+  transition: font-size ease-in-out 1s;
+}
+
 .action-speech {
   margin: 0.5rem;
   color: $furl-speech-user-color;
+
+  &.long-text {
+    font-size: 0.5rem;
+  }
+}
+
+@media screen and (max-width:$furl-mobile-desktop-limit) {
+  .action-speech.long-text-mobile {
+    font-size: 0.5rem;
+  }
 }
 
 .action-speech-transcribing {

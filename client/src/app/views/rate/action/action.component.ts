@@ -1,16 +1,18 @@
-import { BehaviorSubject } from 'rxjs';
-import { ElementRef } from '@angular/core';
-import { SpeechService } from './../../../shared/speech.service';
+import { BehaviorSubject } from "rxjs";
+import { HostListener, ChangeDetectorRef, Host, ElementRef } from "@angular/core";
+import { SpeechService } from "./../../../shared/speech.service";
 import { FeedbackAction, FurlRecognizer } from "../../../shared/models";
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { distinctUntilChanged, filter } from "rxjs/operators";
 
 @Component({
-  selector: 'app-action',
-  templateUrl: './action.component.html',
-  styleUrls: ['./action.component.scss']
+  selector: "app-action",
+  templateUrl: "./action.component.html",
+  styleUrls: ["./action.component.scss"],
 })
 export class ActionComponent implements OnInit {
+  noTranscription: boolean;
+
   FeedbackActionState = FeedbackAction.FeedbackActionState;
 
   @Input()
@@ -25,31 +27,36 @@ export class ActionComponent implements OnInit {
   @Output("end")
   endEventEmitter = new EventEmitter<FeedbackAction>();
 
-  @ViewChild('speechElement') speechElement: ElementRef; 
+  @Input()
+  actionFocus: boolean;
 
   recognizer: FurlRecognizer;
 
   speechBuilder = new BehaviorSubject<string>("");
 
-  constructor(private _speech: SpeechService) {
+  constructor(private _speech: SpeechService, private ref: ChangeDetectorRef, private _elementRef: ElementRef) {
     this.recognizer = this._speech.recognizer();
   }
 
   ngOnInit() {
-    this.recognizer.capturedText.pipe(
-      distinctUntilChanged(),
-      filter(value => !!value)
-    ).subscribe(speechValue => {
-      const trimmedSentence = speechValue.trim();
-      const addedSentence = trimmedSentence.charAt(0).toUpperCase() + trimmedSentence.slice(1) + "."
-      
-      this.speechBuilder.next(
-        this.speechBuilder.value + " " + addedSentence
+    this.recognizer.capturedText
+      .pipe(
+        distinctUntilChanged(),
+        filter(value => !!value)
       )
-    })
+      .subscribe(speechValue => {
+        const trimmedSentence = speechValue.trim();
+        const addedSentence =
+          trimmedSentence.charAt(0).toUpperCase() +
+          trimmedSentence.slice(1) +
+          ".";
+
+        this.speechBuilder.next(this.speechBuilder.value + " " + addedSentence);
+
+        this.ref.detectChanges();
+      });
 
     this.speechBuilder.subscribe(value => {
-      this.speechElement.nativeElement.innerHTML = value;
       this.action.transcription = value;
     });
   }
@@ -64,12 +71,15 @@ export class ActionComponent implements OnInit {
 
   complete() {
     this.action.complete();
-    this.recognizer.stop();
-    this.endEventEmitter.emit(this.action);
+    this.finalize();
   }
 
   fail() {
     this.action.fail();
+    this.finalize();
+  }
+
+  finalize() {
     this.recognizer.stop();
     this.endEventEmitter.emit(this.action);
   }

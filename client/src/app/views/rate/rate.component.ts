@@ -1,10 +1,10 @@
-import { SnackbarService } from './../../shared/snackbar.service';
+import { SnackbarService } from "./../../shared/snackbar.service";
 import { BehaviorSubject } from "rxjs";
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { DbService } from "../../shared/db.service";
-import { AuthService } from '../../shared/auth/auth.service';
-import { Feedback, FeedbackRequest, FeedbackAction } from '../../shared/models';
+import { AuthService } from "../../shared/auth/auth.service";
+import { Feedback, FeedbackRequest, FeedbackAction } from "../../shared/models";
 
 enum FeedbackStatus {
   INIT,
@@ -25,14 +25,13 @@ export class RateComponent implements OnInit {
 
   ongoingAction: FeedbackAction = null;
   ongoingActionIndex: number = null;
+  nextActionIndex = 0;
 
   allActionsDone: boolean;
 
   FeedbackStatus = FeedbackStatus;
 
-  feedbackStatus = new BehaviorSubject<FeedbackStatus>(
-    FeedbackStatus.INIT
-  );
+  feedbackStatus = new BehaviorSubject<FeedbackStatus>(FeedbackStatus.INIT);
 
   @ViewChild("written")
   writtenTextarea: ElementRef;
@@ -42,7 +41,7 @@ export class RateComponent implements OnInit {
     private _dbService: DbService,
     private _authService: AuthService,
     private _snackbarService: SnackbarService
-    ) {
+  ) {
     this._activatedRoute.params.subscribe((params: Params) => {
       this.feedbackRequestId = params.id;
       this.loadFeedbackRequest(this.feedbackRequestId);
@@ -69,13 +68,28 @@ export class RateComponent implements OnInit {
 
   handleActionEnd(event, index) {
     if (this.ongoingAction !== event || this.ongoingActionIndex !== index) {
-      return console.error("Something went terribly wrong with actions state management");
+      return console.error(
+        "Something went terribly wrong with actions state management"
+      );
     }
-    
     delete this.ongoingActionIndex;
     delete this.ongoingAction;
 
+    this.nextActionIndex = this.getNextAvailableTask();
+
     this.allActionsDone = this.checkAllActionsDone(this.feedbackActions);
+  }
+
+  getNextAvailableTask(): number {
+    for (
+      let actionIndex = 0;
+      actionIndex < this.feedbackActions.length;
+      actionIndex++
+    ) {
+      if (this.feedbackActions[actionIndex].isOpen) {
+        return actionIndex;
+      }
+    }
   }
 
   checkAllActionsDone(actions: FeedbackAction[]) {

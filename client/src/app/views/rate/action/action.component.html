@@ -1,30 +1,77 @@
-<mat-card>
-  <div [class.hidden]="(action._state | async) == FeedbackActionState.INIT" class="action-content">{{action.text}}</div>
-  <div [class.hidden]="(action._state | async) == FeedbackActionState.INIT" class="action-speech-wrapper">
-      <mat-icon class="action-speech-icon">record_voice_over</mat-icon>
-      <div class="action-speech">
-        <span #speechElement></span>
-        <span class="action-speech-transcribing" *ngIf="(action._state | async) == FeedbackActionState.START">(transcribing)</span>
-      </div>
+<mat-card [class.focus]="actionFocus" [class.init]="(action._state | async) === FeedbackActionState.INIT">
+  <div
+    [class.hidden]="(action._state | async) == FeedbackActionState.INIT"
+    class="action-content"
+  >
+    {{ action.text }}
   </div>
-  <mat-progress-bar *ngIf="(action._state | async) == FeedbackActionState.START" mode="buffer"></mat-progress-bar>
-  <ng-container [ngSwitch]="action._state | async">
-  <mat-card-actions *ngSwitchDefault>
-    <button mat-raised-button color="primary" (click)="start()">Start</button>
-  </mat-card-actions>
-  <mat-card-actions *ngSwitchCase="FeedbackActionState.START">
-    <button mat-raised-button color="warn" (click)="fail()">Issue</button>
-    <button mat-raised-button color="primary" (click)="complete()">Complete</button>
-  </mat-card-actions>
-  <mat-card-actions *ngSwitchCase="FeedbackActionState.FAIL">
-      <button mat-flat-button color="warn">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-card-actions>
-  <mat-card-actions *ngSwitchCase="FeedbackActionState.COMPLETE">
-    <button mat-flat-button color="primary">
-      <mat-icon>check</mat-icon>
-    </button>
-  </mat-card-actions>
-  </ng-container>
+  <div class="action-status">
+    <ng-container [ngSwitch]="action._state | async">
+      <mat-icon *ngSwitchDefault>query_builder</mat-icon>
+      <mat-spinner
+        *ngSwitchCase="FeedbackActionState.START"
+        [diameter]="24"
+        [color]="'accent'"
+      ></mat-spinner>
+      <mat-icon *ngSwitchCase="FeedbackActionState.COMPLETE" color="accent"
+        >done</mat-icon
+      >
+      <mat-icon *ngSwitchCase="FeedbackActionState.FAIL" color="warn"
+        >done</mat-icon
+      >
+    </ng-container>
+  </div>
+  <section
+    class="action-detailed"
+  >
+    <div
+      [class.hidden]="(action._state | async) == FeedbackActionState.INIT"
+      class="action-speech-wrapper"
+    >
+      <mat-icon class="action-speech-icon">record_voice_over</mat-icon>
+      <div class="action-speech" [class.long-text]="(speechBuilder | async).length > 300" [class.long-text-mobile]="(speechBuilder | async).length > 190">
+        <span>{{ speechBuilder | async }}</span>
+        <span
+          class="action-speech-transcribing"
+          *ngIf="(action._state | async) == FeedbackActionState.START"
+          >(transcribing)</span
+        >
+        <span
+          *ngIf="
+            !(speechBuilder | async) &&
+            ((action._state | async) == FeedbackActionState.COMPLETE ||
+              (action._state | async) == FeedbackActionState.FAIL)
+          "
+          >(no transcription)</span
+        >
+      </div>
+    </div>
+    <mat-progress-bar
+      *ngIf="(action._state | async) == FeedbackActionState.START"
+      mode="buffer"
+    ></mat-progress-bar>
+    <ng-container [ngSwitch]="action._state | async">
+      <mat-card-actions *ngSwitchDefault>
+        <button mat-raised-button color="primary" (click)="start()">
+          Start
+        </button>
+      </mat-card-actions>
+      <mat-card-actions *ngSwitchCase="FeedbackActionState.START">
+        <button mat-raised-button color="warn" (click)="fail()">Issue</button>
+        <button mat-raised-button color="primary" (click)="complete()">
+          Complete
+        </button>
+      </mat-card-actions>
+      <mat-card-actions *ngSwitchCase="FeedbackActionState.FAIL">
+        <button mat-button color="warn">
+          marked problematic
+        </button>
+      </mat-card-actions>
+      <mat-card-actions *ngSwitchCase="FeedbackActionState.COMPLETE">
+        <button mat-button color="accent">
+          completed
+        </button>
+      </mat-card-actions>
+    </ng-container>
+  </section>
 </mat-card>

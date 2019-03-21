@@ -1,13 +1,32 @@
 <ng-container [ngSwitch]="changingState">
   <mat-spinner *ngSwitchCase="true" [diameter]="25"></mat-spinner>
   <ng-container *ngSwitchDefault [ngSwitch]="!!(authState | async)">
-      <button mat-stroked-button *ngSwitchCase="false" (click)="login()">Sign In</button>
-      <section *ngSwitchDefault>
-          <button mat-button class="auth-control-username mat-body" [routerLink]="[username]">{{ username }}</button>
-          <button mat-button class="auth-control-icon mat-body" [routerLink]="[username]">
-            <mat-icon>account_circle</mat-icon>
-          </button>
-          <button mat-stroked-button (click)="logout()">Sign Out</button>
-        </section>
+    <button mat-button *ngSwitchCase="false" (click)="login()">
+      Sign In
+    </button>
+    <section *ngSwitchDefault>
+      <button
+        mat-button
+        class="auth-control-desktop-only auth-control-username mat-body"
+        [routerLink]="[username]"
+      >
+        {{ username }}
+      </button>
+      <button
+        mat-button
+        class="auth-control-mobile-only auth-control-icon mat-body"
+        [routerLink]="[username]"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <button mat-button class="auth-control-desktop-only" (click)="logout()">Sign Out</button>
+      <button
+        mat-button
+        class="auth-control-mobile-only auth-control-icon mat-body"
+        (click)="logout()"
+      >
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+    </section>
   </ng-container>
 </ng-container>

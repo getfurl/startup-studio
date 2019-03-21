@@ -49,6 +49,10 @@ export class FeedbackAction {
     );
   }
 
+  get isOpen() {
+    return this._state.value === FeedbackActionState.INIT;
+  }
+
   start() {
     this._state.next(FeedbackAction.FeedbackActionState.START);
     this._startTime = Date.now();

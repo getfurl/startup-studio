@@ -84,7 +84,7 @@ export class EmotionService {
       if (er) {
         emotionSubject.next(er);
       }
-    }, 100);
+    }, 500);
 
     const emotionSubject = new Subject();
     const $emotion = emotionSubject.pipe(

@@ -83,7 +83,6 @@ export class ActionComponent implements OnInit {
 
   emotionCaptureStart() {
     this.emotionSubscription = this._emotionService.getEmotionStream().subscribe((emotions: any[]) => {
-      console.log(emotions)
       let maxEmotion;
       emotions.forEach(emotion => {
         if (!maxEmotion || emotion.value > maxEmotion.value) {
@@ -91,7 +90,9 @@ export class ActionComponent implements OnInit {
         }
       })
 
-      this.emotions.push(maxEmotion)
+      if (maxEmotion.value > 0.3) {
+        this.emotions.push(maxEmotion)
+      }
     })
   }
 

@@ -15,6 +15,48 @@
   }
 }
 
+.emotions {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2.25rem;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+  overflow-y: visible;
+  right: 11rem;
+  margin-bottom: 0.5rem;
+
+  .emoji {
+    position: absolute;
+    animation: slide 20s linear 0s 1;
+    animation-fill-mode: none;
+    right: 200%;
+    font-size: 1.5rem;
+    margin: 0.25rem;
+  }
+}
+
+@keyframes slide {
+  0% {
+    right: 0;
+    opacity: 0;
+  }
+
+  2% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+
+  5% {
+    transform: none;
+  }
+
+  100% {
+    right: 100rem;
+  }
+}
+
 mat-card .action-detailed {
   transition: all ease-in-out 0.3s;
   margin: 0;
@@ -62,6 +104,9 @@ mat-card-actions {
 
 mat-card-actions {
   text-align: right;
+
+  z-index: 10;
+
   button {
     margin-left: 0.5rem;
     margin-right: 0;

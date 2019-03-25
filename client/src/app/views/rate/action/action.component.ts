@@ -1,9 +1,10 @@
-import { BehaviorSubject } from "rxjs";
-import { HostListener, ChangeDetectorRef, Host, ElementRef } from "@angular/core";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { ChangeDetectorRef } from "@angular/core";
 import { SpeechService } from "./../../../shared/speech.service";
 import { FeedbackAction, FurlRecognizer } from "../../../shared/models";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { distinctUntilChanged, filter } from "rxjs/operators";
+import { EmotionService } from 'src/app/shared/emotion.service';
 
 @Component({
   selector: "app-action",
@@ -32,10 +33,20 @@ export class ActionComponent implements OnInit {
 
   recognizer: FurlRecognizer;
 
+  emotionSubscription: Subscription;
+
+  emotions = []
+
   speechBuilder = new BehaviorSubject<string>("");
 
-  constructor(private _speech: SpeechService, private ref: ChangeDetectorRef, private _elementRef: ElementRef) {
+  constructor(private _speech: SpeechService, private ref: ChangeDetectorRef, private _emotionService: EmotionService) {
     this.recognizer = this._speech.recognizer();
+
+  }
+  ngOnDestroy() {
+    if (this.emotionSubscription) {
+      this.emotionSubscription.unsubscribe();
+    }
   }
 
   ngOnInit() {
@@ -61,10 +72,38 @@ export class ActionComponent implements OnInit {
     });
   }
 
+  emojis = {
+    "angry": "😖",
+    "happy": "😄",
+    "sad": "😐",
+    "disgusted": "🤢",
+    "fear": "😨",
+    "surprised":"😳"
+  }
+
+  emotionCaptureStart() {
+    this.emotionSubscription = this._emotionService.getEmotionStream().subscribe((emotions: any[]) => {
+      console.log(emotions)
+      let maxEmotion;
+      emotions.forEach(emotion => {
+        if (!maxEmotion || emotion.value > maxEmotion.value) {
+          maxEmotion = emotion;
+        }
+      })
+
+      this.emotions.push(maxEmotion)
+    })
+  }
+
+  emotionCaptureEnd() {
+    this.emotionSubscription.unsubscribe();
+  }
+
   start() {
     if (!this.ongoingAction) {
       this.action.start();
       this.recognizer.start();
+      this.emotionCaptureStart()
       this.startEventEmitter.emit(this.action);
     }
   }
@@ -81,6 +120,7 @@ export class ActionComponent implements OnInit {
 
   finalize() {
     this.recognizer.stop();
+    this.emotionCaptureEnd();
     this.endEventEmitter.emit(this.action);
   }
 }

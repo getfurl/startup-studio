@@ -29,7 +29,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/clmtrackr/examples/js/emotion_classifier.js",
+              "node_modules/clmtrackr/examples/js/emotionmodel.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {

@@ -46,6 +46,11 @@
         >
       </div>
     </div>
+    <div class="emotions">
+      <span *ngFor="let emotion of emotions" class="emoji">
+        {{emojis[emotion.emotion]}}
+      </span>
+    </div>
     <mat-progress-bar
       *ngIf="(action._state | async) == FeedbackActionState.START"
       mode="buffer"

@@ -16,6 +16,7 @@ import { ViewModeCaptionComponent } from "./misc/header/view-mode-caption/view-m
 import { HeaderComponent } from "./misc/header/header.component";
 import { AppRoutingModule } from "../app-routing.module";
 import { TasksCountComponent } from './misc/tasks-count/tasks-count.component';
+import { EmotionService } from './emotion.service';
 
 const SHARED_DIALOGS = [
   DialogSignActionComponent,
@@ -34,7 +35,8 @@ const SHARED_SERVICES = [
   AuthService,
   AuthDialogService,
   DbService,
-  SpeechService
+  SpeechService,
+  EmotionService
 ];
 const SHARED_MODULES = [
   CommonModule,

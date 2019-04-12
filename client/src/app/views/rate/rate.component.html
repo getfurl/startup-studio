@@ -20,6 +20,8 @@
         (start)="handleActionStart($event, i)"
         (end)="handleActionEnd($event, i)"
         [actionFocus]="i == nextActionIndex"
+        [emotion]="emotion"
+        [getTranscriptionStream]="getTranscriptionStream"
         *ngFor="let action of feedbackActions; index as i"
       ></app-action>
     </ng-container>

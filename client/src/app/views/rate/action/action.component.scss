@@ -22,18 +22,15 @@
   height: 2.25rem;
   z-index: 5;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
   overflow-y: visible;
   right: 11rem;
   margin-bottom: 0.5rem;
 
-  .emoji {
+  #myDiv {
     position: absolute;
-    animation: slide 20s linear 0s 1;
-    animation-fill-mode: none;
-    right: 200%;
-    font-size: 1.5rem;
-    margin: 0.25rem;
+    width: 100%;
+    height: 100%;
   }
 }
 

@@ -1,15 +1,15 @@
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject, Subscription, Observable } from "rxjs";
 import { ChangeDetectorRef } from "@angular/core";
-import { SpeechService } from "./../../../shared/speech.service";
 import { FeedbackAction, FurlRecognizer } from "../../../shared/models";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { distinctUntilChanged, filter } from "rxjs/operators";
-import { EmotionService } from 'src/app/shared/emotion.service';
+
+import * as Plotly from 'plotly.js-dist';
+
 
 @Component({
   selector: "app-action",
   templateUrl: "./action.component.html",
-  styleUrls: ["./action.component.scss"],
+  styleUrls: ["./action.component.scss"]
 })
 export class ActionComponent implements OnInit {
   noTranscription: boolean;
@@ -22,90 +22,129 @@ export class ActionComponent implements OnInit {
   @Input()
   ongoingAction: FeedbackAction;
 
+  @Input()
+  emotion: EventEmitter<any>;
+
+  @Input()
+  getTranscriptionStream: () => Observable<any>;
+
   @Output("start")
   startEventEmitter = new EventEmitter<FeedbackAction>();
 
   @Output("end")
   endEventEmitter = new EventEmitter<FeedbackAction>();
 
+  emotionSub: Subscription;
+  transcriptionSub: Subscription;
+
+  startTime: number;
+
   @Input()
   actionFocus: boolean;
 
-  recognizer: FurlRecognizer;
+  emotions = [];
+  emotionsTime = [];
 
-  emotionSubscription: Subscription;
-
-  emotions = []
-
+  sentences: string[] = [];
   speechBuilder = new BehaviorSubject<string>("");
 
-  constructor(private _speech: SpeechService, private ref: ChangeDetectorRef, private _emotionService: EmotionService) {
-    this.recognizer = this._speech.recognizer();
-
-  }
-  ngOnDestroy() {
-    if (this.emotionSubscription) {
-      this.emotionSubscription.unsubscribe();
-    }
-  }
+  constructor(private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.recognizer.capturedText
-      .pipe(
-        distinctUntilChanged(),
-        filter(value => !!value)
-      )
-      .subscribe(speechValue => {
-        const trimmedSentence = speechValue.trim();
-        const addedSentence =
-          trimmedSentence.charAt(0).toUpperCase() +
-          trimmedSentence.slice(1) +
-          ".";
-
-        this.speechBuilder.next(this.speechBuilder.value + " " + addedSentence);
-
-        this.ref.detectChanges();
-      });
-
-    this.speechBuilder.subscribe(value => {
-      this.action.transcription = value;
-    });
   }
 
   emojis = {
-    "angry": "😖",
-    "happy": "😄",
-    "sad": "😐",
-    "disgusted": "🤢",
-    "fear": "😨",
-    "surprised":"😳"
+    angry: "😖",
+    happy: "😄",
+    sad: "😐",
+    surprised: "😳"
+  };
+
+  drawChart() {
+    const trace = {
+      x: this.emotionsTime,
+      y: this.emotions,
+      mode: 'lines',
+      name: 'spline',
+      text: ['tweak line smoothness<br>with "smoothing" in line object', 'tweak line smoothness<br>with "smoothing" in line object', 'tweak line smoothness<br>with "smoothing" in line object', 'tweak line smoothness<br>with "smoothing" in line object', 'tweak line smoothness<br>with "smoothing" in line object', 'tweak line smoothness<br>with "smoothing" in line object'],
+      line: {shape: 'spline'},
+      type: 'scatter'
+    };
+    
+    const data = [trace];
+
+    const el = document.getElementById("myDiv");
+    
+    const layout = {
+      autosize: false,
+      width: el.clientWidth,
+      height: el.clientHeight,
+      yaxis: {range: [-2, 2]},
+      xaxis: {range: [0, this.emotionsTime[this.emotionsTime.length - 1]]},
+      margin: {
+        l: 0,
+        r: 0,
+        b: 0,
+        t: 0,
+        pad: 0
+      },
+      legend: {
+        y: 0.5,
+        traceorder: 'reversed',
+        font: {size: 16},
+        yref: 'paper'
+      }};
+    
+    Plotly.newPlot('myDiv', data, layout);
   }
 
-  emotionCaptureStart() {
-    this.emotionSubscription = this._emotionService.getEmotionStream().subscribe((emotions: any[]) => {
-      let maxEmotion;
-      emotions.forEach(emotion => {
-        if (!maxEmotion || emotion.value > maxEmotion.value) {
-          maxEmotion = emotion;
-        }
-      })
-
-      if (maxEmotion.value > 0.3) {
-        this.emotions.push(maxEmotion)
-      }
+  startEmotionCapture() {
+    this.emotionSub = this.emotion.subscribe((value) => {
+      const sampleTime = (Date.now() - this.startTime) / 1000;
+      this.emotionsTime.push(sampleTime);
+      this.emotions.push(value);
+      this.drawChart();
     })
   }
 
-  emotionCaptureEnd() {
-    this.emotionSubscription.unsubscribe();
+  startTranscribing() {
+    const transcript = this.getTranscriptionStream();
+    this.transcriptionSub = transcript.subscribe(
+      ({ transcript, isFinal, words }) => {
+        const trimmedSentence = transcript.trim();
+        let addedSentence =
+          trimmedSentence.charAt(0).toUpperCase() + trimmedSentence.slice(1);
+
+        if (isFinal) {
+          console.table(words);
+          this.sentences.push(addedSentence);
+          addedSentence = "";
+        }
+
+        if (addedSentence) {
+          addedSentence += "...";
+        }
+
+        let previousText = this.sentences.join(". ");
+
+        if (previousText) {
+          previousText += ".";
+        }
+
+        this.speechBuilder.next(previousText + " " + addedSentence);
+
+        this.ref.detectChanges();
+      }
+    );
   }
 
   start() {
     if (!this.ongoingAction) {
+      this.startTime = Date.now();
       this.action.start();
-      this.recognizer.start();
-      this.emotionCaptureStart()
       this.startEventEmitter.emit(this.action);
+      this.startTranscribing();
+      this.startEmotionCapture();
     }
   }
 
@@ -120,8 +159,18 @@ export class ActionComponent implements OnInit {
   }
 
   finalize() {
-    this.recognizer.stop();
-    this.emotionCaptureEnd();
     this.endEventEmitter.emit(this.action);
+
+    setTimeout(() => {
+      if (this.transcriptionSub) {
+        this.transcriptionSub.unsubscribe();
+      }
+    }, 2000);
+
+    setTimeout(() => {
+      if (this.emotionSub) {
+        this.emotionSub.unsubscribe();
+      }
+    }, 2000);
   }
 }

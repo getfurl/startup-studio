@@ -11,7 +11,8 @@ export const environment = {
     projectId: "furl-80ceb",
     storageBucket: "furl-80ceb.appspot.com",
     messagingSenderId: "618518813015"
-  }
+  },
+  ws: "ws://localhost:9030"
 };
 
 /*

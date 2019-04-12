@@ -2,17 +2,22 @@ import { BehaviorSubject } from 'rxjs';
 
 export class FurlRecognizer {
   instance: SpeechRecognition;
-  capturedText = new BehaviorSubject<string>(null);
+  capturedText = new BehaviorSubject<{ transcript: string, isFinal: boolean }>(null);
   
   constructor(speechRecognitionInstance) {
     this.instance = speechRecognitionInstance;
     this.instance.lang = 'en-US';
-    this.instance.interimResults = false;
+    this.instance.interimResults = true;
     this.instance.continuous = true;
+    this.instance.maxAlternatives = 1;
 
     this.instance.onresult = event => {
-      const text = event.results[event.results.length - 1][0].transcript;
-      this.capturedText.next(text);
+      const isFinal = event.results[0].isFinal;
+      const transcript = event.results[0][0].transcript;
+      if (isFinal) {
+        console.log(transcript);
+      }
+      this.capturedText.next({transcript, isFinal});
     }
   }
 

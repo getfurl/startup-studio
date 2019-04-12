@@ -1,10 +1,11 @@
 import { SnackbarService } from "./../../shared/snackbar.service";
-import { BehaviorSubject } from "rxjs";
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { DbService } from "../../shared/db.service";
 import { AuthService } from "../../shared/auth/auth.service";
 import { Feedback, FeedbackRequest, FeedbackAction } from "../../shared/models";
+import { EmotionService } from 'src/app/shared/emotion.service';
 
 enum FeedbackStatus {
   INIT,
@@ -33,14 +34,22 @@ export class RateComponent implements OnInit {
 
   feedbackStatus = new BehaviorSubject<FeedbackStatus>(FeedbackStatus.INIT);
 
+  emotion = new EventEmitter<any>();
+  transcript = new EventEmitter<{ isFinal: boolean, transcript: string}>();
+  emotionSub: Subscription;
+  transcriptionSub: Subscription;
+
   @ViewChild("written")
   writtenTextarea: ElementRef;
+
+  private _stream: MediaStream | any;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _dbService: DbService,
     private _authService: AuthService,
-    private _snackbarService: SnackbarService
+    private _snackbarService: SnackbarService,
+    private _emotionService: EmotionService
   ) {
     this._activatedRoute.params.subscribe((params: Params) => {
       this.feedbackRequestId = params.id;
@@ -48,7 +57,22 @@ export class RateComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._emotionService.getDataStream().subscribe(streamInterface => {
+      this.emotionSub = streamInterface.$emotion.subscribe(e => this.emotion.emit(e));
+      this._stream = streamInterface.stream;
+    })
+  }
+
+  ngOnDestroy() {
+    this.emotionSub.unsubscribe();
+    this.transcriptionSub.unsubscribe();
+    this._emotionService.stopStream(this._stream);
+  }
+
+  getTranscriptionStream = () => {
+    return this._emotionService.getTranscriptFromStream(this._stream);
+  }
 
   loadFeedbackRequest(feedbackRequestId) {
     this._dbService
